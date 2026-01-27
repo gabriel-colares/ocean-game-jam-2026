@@ -16,7 +16,7 @@ vsp = 0;
 x_resto = 0;
 y_resto = 0;
 
-move_speed = 2.6;
+move_speed = 2;
 accel_move = 0.95;
 decel_stop = 1.15;
 
