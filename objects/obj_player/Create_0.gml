@@ -1,12 +1,14 @@
 #region CONTROLES
-key_left_primary  = vk_left;
-key_left_alt      = ord("A");
-key_right_primary = vk_right;
-key_right_alt     = ord("D");
-key_up_primary    = vk_up;
-key_up_alt        = ord("W");
-key_down_primary  = vk_down;
-key_down_alt      = ord("S");
+key_left_primary  = ord("A");
+key_left_alt      = vk_left;
+key_right_primary = ord("D");
+key_right_alt     = vk_right;
+key_up_primary    = ord("W");
+key_up_alt        = vk_up;
+key_down_primary  = ord("S");
+key_down_alt      = vk_down;
+key_attack_primary = ord("J");
+key_attack_alt     = ord("Z");
 #endregion
 
 #region ORIENTAÇÃO
@@ -48,6 +50,14 @@ sprRunDown  = sprPlayerRunDown;
 sprRunUp    = sprPlayerRunUp;
 sprRunSide  = sprPlayerRunLeft;
 
+sprAtkDown  = sprPlayerAttackDown;
+sprAtkUp    = sprPlayerAttackUp;
+sprAtkSide  = sprPlayerAttackLeft;
+
+attack_hold_steps = 3;
+is_attacking = false;
+attack_last  = 0;
+
 sprite_index = sprIdleSide;
 image_index  = 0;
 image_speed  = 0;
@@ -61,6 +71,7 @@ anim_hold       = run_hold_steps;
 anim_timer      = 0;
 idle_stop_timer = 0;
 #endregion
+
 
 #region FUNÇÕES
 function pl_approach(_cur, _target, _step) {
@@ -102,5 +113,32 @@ function pl_sprite_run(_f) {
     if (_f == 0) return sprRunDown;
     if (_f == 3) return sprRunUp;
     return sprRunSide;
+}
+
+function pl_sprite_attack(_f) {
+    if (_f == 0) return sprAtkDown;
+    if (_f == 3) return sprAtkUp;
+    return sprAtkSide;
+}
+
+
+function pl_attack_start() {
+    is_attacking = true;
+    attack_timer = 0;
+
+	var spr_atk = pl_sprite_attack(facing);
+	sprite_index = spr_atk;
+	image_xscale = (facing == 2) ? -1 : 1;
+    image_speed  = 0;
+    image_index  = 0;
+
+    anim_timer = 0;
+    anim_hold  = attack_hold_steps;
+
+    attack_last = sprite_get_number(sprite_index) - 1;
+    if (attack_last < 0) attack_last = 0;
+
+    hsp = 0; vsp = 0;
+    x_resto = 0; y_resto = 0;
 }
 #endregion
