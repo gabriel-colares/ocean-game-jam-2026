@@ -7,8 +7,13 @@ key_up_primary    = ord("W");
 key_up_alt        = vk_up;
 key_down_primary  = ord("S");
 key_down_alt      = vk_down;
+
 key_attack_primary = ord("J");
 key_attack_alt     = ord("Z");
+
+// TIRO (LANÇA)
+key_shoot_primary  = ord("K");
+key_shoot_alt      = vk_shift;
 #endregion
 
 #region ORIENTAÇÃO
@@ -23,7 +28,6 @@ prev_right = false;
 prev_up    = false;
 prev_down  = false;
 #endregion
-
 
 #region MOVIMENTO
 hsp = 0;
@@ -62,6 +66,8 @@ sprite_index = sprIdleSide;
 image_index  = 0;
 image_speed  = 0;
 image_xscale = 1;
+
+// RECOMENDADO: troque por um sprPlayerMask depois
 mask_index = sprPlayerRunDown;
 
 run_hold_steps  = 4;
@@ -73,6 +79,19 @@ anim_timer      = 0;
 idle_stop_timer = 0;
 #endregion
 
+#region TIRO (LANÇA)
+proj_obj = asset_get_index("obj_spear_proj"); // crie esse objeto
+shoot_cooldown_max = 12;
+shoot_cooldown     = 0;
+
+shoot_hold_steps = 2;
+is_shooting      = false;
+shoot_anim_last  = 0;
+
+// offsets de saída (ajuste conforme origin do player)
+shoot_off_x = 8;
+shoot_off_y = 6;
+#endregion
 
 #region FUNÇÕES
 function pl_approach(_cur, _target, _step) {
@@ -122,14 +141,13 @@ function pl_sprite_attack(_f) {
     return sprAtkSide;
 }
 
-
 function pl_attack_start() {
     is_attacking = true;
     attack_timer = 0;
 
-	var spr_atk = pl_sprite_attack(facing);
-	sprite_index = spr_atk;
-	image_xscale = (facing == 2) ? -1 : 1;
+    var spr_atk = pl_sprite_attack(facing);
+    sprite_index = spr_atk;
+    image_xscale = (facing == 2) ? -1 : 1;
     image_speed  = 0;
     image_index  = 0;
 
@@ -141,5 +159,40 @@ function pl_attack_start() {
 
     hsp = 0; vsp = 0;
     x_resto = 0; y_resto = 0;
+}
+
+function pl_shoot_start() {
+    is_shooting = true;
+
+    hsp = 0; vsp = 0;
+    x_resto = 0; y_resto = 0;
+
+    var spr_use = pl_sprite_attack(facing); // reaproveita anima de ataque
+    sprite_index = spr_use;
+    image_xscale = (facing == 2) ? -1 : 1;
+    image_speed  = 0;
+    image_index  = 0;
+
+    anim_timer = 0;
+    anim_hold  = shoot_hold_steps;
+
+    shoot_anim_last = sprite_get_number(sprite_index) - 1;
+    if (shoot_anim_last < 0) shoot_anim_last = 0;
+
+    if (proj_obj != -1) {
+        var ox = 0, oy = 0;
+
+        switch (facing) {
+            case 0: ox = 0;            oy = shoot_off_y;  break; // down
+            case 3: ox = 0;            oy = -shoot_off_y; break; // up
+            case 1: ox = -shoot_off_x; oy = 0;            break; // left
+            case 2: ox = shoot_off_x;  oy = 0;            break; // right
+        }
+
+        var p = instance_create_layer(x + ox, y + oy, layer, proj_obj);
+        p.dir = facing;
+    }
+
+    shoot_cooldown = shoot_cooldown_max;
 }
 #endregion
