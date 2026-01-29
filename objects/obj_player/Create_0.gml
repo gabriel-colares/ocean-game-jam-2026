@@ -62,6 +62,7 @@ sprite_index = sprIdleSide;
 image_index  = 0;
 image_speed  = 0;
 image_xscale = 1;
+mask_index = sprPlayerRunDown;
 
 run_hold_steps  = 4;
 idle_hold_steps = 12;
