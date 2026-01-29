@@ -8,7 +8,7 @@
     "children":[],
     "name":"Default",
   },
-  "defaultScriptType":0,
+  "defaultScriptType":1,
   "Folders":[
     {"$GMFolder":"","%Name":"Objects","folderPath":"folders/Objects.yy","name":"Objects","resourceType":"GMFolder","resourceVersion":"2.0",},
     {"$GMFolder":"","%Name":"Rooms","folderPath":"folders/Rooms.yy","name":"Rooms","resourceType":"GMFolder","resourceVersion":"2.0",},
@@ -30,6 +30,8 @@
   },
   "name":"Game JAM",
   "resources":[
+    {"id":{"name":"obj_camera_bounds","path":"objects/obj_camera_bounds/obj_camera_bounds.yy",},},
+    {"id":{"name":"obj_camera_controller","path":"objects/obj_camera_controller/obj_camera_controller.yy",},},
     {"id":{"name":"obj_player","path":"objects/obj_player/obj_player.yy",},},
     {"id":{"name":"obj_solid","path":"objects/obj_solid/obj_solid.yy",},},
     {"id":{"name":"Room1","path":"rooms/Room1/Room1.yy",},},
@@ -50,8 +52,10 @@
     {"id":{"name":"sprPlayerAttackLeft","path":"sprites/sprPlayerAttackLeft/sprPlayerAttackLeft.yy",},},
     {"id":{"name":"sprPlayerAttackUp","path":"sprites/sprPlayerAttackUp/sprPlayerAttackUp.yy",},},
     {"id":{"name":"sprPlayerIdleDown","path":"sprites/sprPlayerIdleDown/sprPlayerIdleDown.yy",},},
+    {"id":{"name":"sprPlayerIdleDown0","path":"sprites/sprPlayerIdleDown0/sprPlayerIdleDown0.yy",},},
     {"id":{"name":"sprPlayerIdleLeft","path":"sprites/sprPlayerIdleLeft/sprPlayerIdleLeft.yy",},},
     {"id":{"name":"sprPlayerIdleUp","path":"sprites/sprPlayerIdleUp/sprPlayerIdleUp.yy",},},
+    {"id":{"name":"sprPlayerIdleUp0","path":"sprites/sprPlayerIdleUp0/sprPlayerIdleUp0.yy",},},
     {"id":{"name":"sprPlayerRunDown","path":"sprites/sprPlayerRunDown/sprPlayerRunDown.yy",},},
     {"id":{"name":"sprPlayerRunLeft","path":"sprites/sprPlayerRunLeft/sprPlayerRunLeft.yy",},},
     {"id":{"name":"sprPlayerRunUp","path":"sprites/sprPlayerRunUp/sprPlayerRunUp.yy",},},
