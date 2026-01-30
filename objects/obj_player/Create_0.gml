@@ -1,3 +1,5 @@
+/// Create Event - obj_player
+
 #region CONTROLES
 key_left_primary  = ord("A");
 key_left_alt      = vk_left;
@@ -14,6 +16,32 @@ key_attack_alt     = ord("Z");
 // TIRO (LANÇA)
 key_shoot_primary  = ord("K");
 key_shoot_alt      = vk_shift;
+#endregion
+
+#region GAMEPAD CONFIG (fallback 0..11)
+pad_deadzone  = 0.25;   // 0.20~0.35 (ajuste fino)
+pad_scan_max  = 11;     // 0..11 (igual teu debug)
+pad_use_dpad  = true;
+pad_use_stick = true;
+
+// ações (compat geral: FACE 1/2/3/4)
+pad_btn_attack = gp_face1; // X (PS) / A (Xbox)
+pad_btn_shoot  = gp_face2; // O (PS) / B (Xbox)
+
+// helper: pega o primeiro gamepad conectado (0..pad_scan_max)
+function pl_gamepad_find_first() {
+  for (var i = 0; i <= pad_scan_max; i++) {
+    if (gamepad_is_connected(i)) return i;
+  }
+  return -1;
+}
+
+// helper: deadzone por eixo (com reescala)
+function pl_apply_deadzone_axis(v, dz) {
+  if (abs(v) < dz) return 0;
+  var s = sign(v);
+  return s * ((abs(v) - dz) / (1 - dz));
+}
 #endregion
 
 #region ORIENTAÇÃO

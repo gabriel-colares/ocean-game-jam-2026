@@ -11,9 +11,6 @@ if (!inited) {
     case 2: vx = 1;  vy = 0;  image_angle = 0;   break; // right
     case 3: vx = 0;  vy = -1; image_angle = 270; break; // up
   }
-
-  // se você tiver sprites por direção, é aqui que troca:
-  // switch (dir) { case 0: sprite_index = sprSpearDown; break; ... }
 }
 #endregion
 

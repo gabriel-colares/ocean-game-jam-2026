@@ -1,16 +1,62 @@
-var _gp = global.gamepad_main;
+/// Step Event - obj_player (teclado + gamepad fallback 0..11, dpad + analógico)
 
 #region INPUT
-var left_down  = gamepad_button_check(_gp, gp_shoulderlb);
-var right_down = keyboard_check(key_right_primary) || keyboard_check(key_right_alt);
-var up_down    = keyboard_check(key_up_primary)    || keyboard_check(key_up_alt);
-var down_down  = keyboard_check(key_down_primary)  || keyboard_check(key_down_alt);
+// --- teclado ---
+var k_left  = keyboard_check(key_left_primary)  || keyboard_check(key_left_alt);
+var k_right = keyboard_check(key_right_primary) || keyboard_check(key_right_alt);
+var k_up    = keyboard_check(key_up_primary)    || keyboard_check(key_up_alt);
+var k_down  = keyboard_check(key_down_primary)  || keyboard_check(key_down_alt);
 
 var atk_press   = keyboard_check_pressed(key_attack_primary) || keyboard_check_pressed(key_attack_alt);
 var shoot_press = keyboard_check_pressed(key_shoot_primary)  || keyboard_check_pressed(key_shoot_alt);
 
-var ix = (right_down ? 1 : 0) - (left_down ? 1 : 0);
-var iy = (down_down  ? 1 : 0) - (up_down   ? 1 : 0);
+// --- gamepad (não quebra se não tiver controle) ---
+var _gp = pl_gamepad_find_first();
+var gp_ok = (_gp != -1);
+
+var gp_dleft = false, gp_dright = false, gp_dup = false, gp_ddown = false;
+var gp_lx = 0, gp_ly = 0;
+
+if (gp_ok) {
+  // dpad
+  if (pad_use_dpad) {
+    gp_dup    = gamepad_button_check(_gp, gp_padu);
+    gp_ddown  = gamepad_button_check(_gp, gp_padd);
+    gp_dleft  = gamepad_button_check(_gp, gp_padl);
+    gp_dright = gamepad_button_check(_gp, gp_padr);
+  }
+
+  // analógico esquerdo
+  if (pad_use_stick) {
+    gp_lx = pl_apply_deadzone_axis(gamepad_axis_value(_gp, gp_axislh), pad_deadzone);
+    gp_ly = pl_apply_deadzone_axis(gamepad_axis_value(_gp, gp_axislv), pad_deadzone);
+  }
+
+  // ações no controle
+  atk_press   = atk_press   || gamepad_button_check_pressed(_gp, pad_btn_attack);
+  shoot_press = shoot_press || gamepad_button_check_pressed(_gp, pad_btn_shoot);
+}
+
+// --- direção final (booleans) ---
+var left_down  = k_left  || gp_dleft  || (gp_lx < 0);
+var right_down = k_right || gp_dright || (gp_lx > 0);
+var up_down    = k_up    || gp_dup    || (gp_ly < 0);
+var down_down  = k_down  || gp_ddown  || (gp_ly > 0);
+
+// --- vetor de movimento (float) ---
+// prioridade: teclado > dpad > analógico
+var ix = 0;
+var iy = 0;
+
+// X
+if (k_left || k_right) ix = (k_right ? 1 : 0) - (k_left ? 1 : 0);
+else if (gp_dleft || gp_dright) ix = (gp_dright ? 1 : 0) - (gp_dleft ? 1 : 0);
+else ix = gp_lx;
+
+// Y
+if (k_up || k_down) iy = (k_down ? 1 : 0) - (k_up ? 1 : 0);
+else if (gp_dup || gp_ddown) iy = (gp_ddown ? 1 : 0) - (gp_dup ? 1 : 0);
+else iy = gp_ly;
 
 var wants_h = (ix != 0);
 var wants_v = (iy != 0);
@@ -146,13 +192,16 @@ if (is_attacking) {
 
 #region MOVIMENTO
 if (!is_attacking && !is_shooting) {
-  var len = sqrt(ix*ix + iy*iy);
-  if (len > 0) { ix /= len; iy /= len; }
+  var mag = sqrt(ix*ix + iy*iy);
 
-  var target_hsp = ix * move_speed;
-  var target_vsp = iy * move_speed;
+  if (mag > 0) {
+    // teclado/dpad diagonal: mag > 1 -> normaliza (mantém mesma velocidade em qualquer direção)
+    // analógico: mag <= 1 -> mantém intensidade (velocidade proporcional ao quanto inclinou)
+    var scale = (mag > 1) ? (1 / mag) : 1;
 
-  if (len > 0) {
+    var target_hsp = (ix * scale) * (move_speed * min(mag, 1));
+    var target_vsp = (iy * scale) * (move_speed * min(mag, 1));
+
     hsp = pl_approach(hsp, target_hsp, accel_move);
     vsp = pl_approach(vsp, target_vsp, accel_move);
   } else {
