@@ -58,6 +58,7 @@
     {"id":{"name":"sprPlayerIdleDown","path":"sprites/sprPlayerIdleDown/sprPlayerIdleDown.yy",},},
     {"id":{"name":"sprPlayerIdleDown0","path":"sprites/sprPlayerIdleDown0/sprPlayerIdleDown0.yy",},},
     {"id":{"name":"sprPlayerIdleLeft","path":"sprites/sprPlayerIdleLeft/sprPlayerIdleLeft.yy",},},
+    {"id":{"name":"sprPlayerIdleLeft3","path":"sprites/sprPlayerIdleLeft3/sprPlayerIdleLeft3.yy",},},
     {"id":{"name":"sprPlayerIdleUp","path":"sprites/sprPlayerIdleUp/sprPlayerIdleUp.yy",},},
     {"id":{"name":"sprPlayerIdleUp0","path":"sprites/sprPlayerIdleUp0/sprPlayerIdleUp0.yy",},},
     {"id":{"name":"sprPlayerRunDown","path":"sprites/sprPlayerRunDown/sprPlayerRunDown.yy",},},
