@@ -1,5 +1,7 @@
+var _gp = global.gamepad_main;
+
 #region INPUT
-var left_down  = keyboard_check(key_left_primary)  || keyboard_check(key_left_alt);
+var left_down  = gamepad_button_check(_gp, gp_shoulderlb);
 var right_down = keyboard_check(key_right_primary) || keyboard_check(key_right_alt);
 var up_down    = keyboard_check(key_up_primary)    || keyboard_check(key_up_alt);
 var down_down  = keyboard_check(key_down_primary)  || keyboard_check(key_down_alt);

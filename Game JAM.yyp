@@ -32,10 +32,12 @@
   "resources":[
     {"id":{"name":"obj_camera_bounds","path":"objects/obj_camera_bounds/obj_camera_bounds.yy",},},
     {"id":{"name":"obj_camera_controller","path":"objects/obj_camera_controller/obj_camera_controller.yy",},},
+    {"id":{"name":"obj_input","path":"objects/obj_input/obj_input.yy",},},
     {"id":{"name":"obj_player","path":"objects/obj_player/obj_player.yy",},},
     {"id":{"name":"obj_solid","path":"objects/obj_solid/obj_solid.yy",},},
     {"id":{"name":"obj_spear_proj","path":"objects/obj_spear_proj/obj_spear_proj.yy",},},
     {"id":{"name":"Room","path":"rooms/Room/Room.yy",},},
+    {"id":{"name":"gamepad_vars","path":"scripts/gamepad_vars/gamepad_vars.yy",},},
     {"id":{"name":"bullet","path":"sprites/bullet/bullet.yy",},},
     {"id":{"name":"spr_player_dead","path":"sprites/spr_player_dead/spr_player_dead.yy",},},
     {"id":{"name":"spr_player_fall","path":"sprites/spr_player_fall/spr_player_fall.yy",},},
