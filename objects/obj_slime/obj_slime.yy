@@ -1,12 +1,12 @@
 {
   "$GMObject":"",
-  "%Name":"obj_player",
+  "%Name":"obj_slime",
   "eventList":[
     {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":0,"eventType":0,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
     {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":0,"eventType":3,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
   ],
   "managed":true,
-  "name":"obj_player",
+  "name":"obj_slime",
   "overriddenProperties":[],
   "parent":{
     "name":"Objects",
@@ -24,20 +24,15 @@
   "physicsRestitution":0.1,
   "physicsSensor":false,
   "physicsShape":1,
-  "physicsShapePoints":[
-    {"x":0.0,"y":0.0,},
-    {"x":112.0,"y":0.0,},
-    {"x":112.0,"y":133.0,},
-    {"x":0.0,"y":133.0,},
-  ],
+  "physicsShapePoints":[],
   "physicsStartAwake":true,
   "properties":[],
   "resourceType":"GMObject",
   "resourceVersion":"2.0",
   "solid":false,
   "spriteId":{
-    "name":"sprPlayerIdleDown",
-    "path":"sprites/sprPlayerIdleDown/sprPlayerIdleDown.yy",
+    "name":"spr_slime_walk",
+    "path":"sprites/spr_slime_walk/spr_slime_walk.yy",
   },
   "spriteMaskId":null,
   "visible":true,
