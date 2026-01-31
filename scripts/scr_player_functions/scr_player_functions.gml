@@ -65,6 +65,84 @@ function pl_init_functions() {
   }
   #endregion
 
+  #region VIDA
+  hp_max = 5;
+  hp = hp_max;
+
+  invuln_steps_max = max(1, ceil(room_speed * 0.2));
+  invuln_steps = 0;
+
+  hitstun_steps_max = max(1, ceil(room_speed * 0.2));
+  hitstun_steps = 0;
+
+  knockback_speed = 3.0;
+  knockback_decel = 0.35;
+
+  self.pl_is_invulnerable = function() {
+    return invuln_steps > 0;
+  };
+
+  self.pl_take_damage = function(_amount) {
+    var _knock_x = 0;
+    var _knock_y = 0;
+    var _stun_steps = hitstun_steps_max;
+
+    if (argument_count >= 2) _knock_x = argument[1];
+    if (argument_count >= 3) _knock_y = argument[2];
+    if (argument_count >= 4) _stun_steps = max(0, argument[3]);
+
+    if (_amount <= 0) return false;
+    if (hp <= 0) return false;
+    if (invuln_steps > 0) return false;
+
+    hp = max(0, hp - _amount);
+    invuln_steps = invuln_steps_max;
+    hitstun_steps = max(hitstun_steps, _stun_steps);
+
+    is_attacking = false;
+    is_shooting  = false;
+
+    var klen = sqrt(_knock_x*_knock_x + _knock_y*_knock_y);
+    if (klen > 0) {
+      var kx = _knock_x / klen;
+      var ky = _knock_y / klen;
+      hsp = kx * knockback_speed;
+      vsp = ky * knockback_speed;
+      x_resto = 0;
+      y_resto = 0;
+    }
+
+    return true;
+  };
+  #endregion
+
+  #region HUD
+  self.pl_draw_gui = function() {
+    var margin = 12;
+    var bar_w = 140;
+    var bar_h = 14;
+
+    var ratio = 0;
+    if (hp_max > 0) ratio = clamp(hp / hp_max, 0, 1);
+
+    var x0 = margin;
+    var y0 = margin;
+
+    draw_set_alpha(1);
+    draw_set_color(c_black);
+    draw_rectangle(x0 - 2, y0 - 2, x0 + bar_w + 2, y0 + bar_h + 2, false);
+
+    draw_set_color(c_red);
+    draw_rectangle(x0, y0, x0 + (bar_w * ratio), y0 + bar_h, false);
+
+    draw_set_color(c_white);
+    draw_text(x0, y0 + bar_h + 4, string(hp) + "/" + string(hp_max));
+
+    draw_set_alpha(1);
+    draw_set_color(c_white);
+  };
+  #endregion
+
   #region MÉTODOS DO PLAYER
   self.pl_attack_start = function() {
     is_attacking = true;

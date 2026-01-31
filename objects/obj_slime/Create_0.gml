@@ -16,6 +16,9 @@ decel_stop = 0.25;
 
 padrao_left = true;            // sprite horizontal aponta pra esquerda
 use_vertical_flip_for_up = false; // true se quiser tentar flipar no Y quando subir
+
+contact_damage = 1;
+hit_pause_steps = max(1, ceil(room_speed * 0.2));
 #endregion
 
 #region STATE
@@ -26,6 +29,7 @@ hsp = 0;
 vsp = 0;
 
 face_axis = 0; // 0=horizontal, 1=vertical (só pra decidir flip opcional)
+hit_pause_timer = 0;
 #endregion
 
 #region HURT

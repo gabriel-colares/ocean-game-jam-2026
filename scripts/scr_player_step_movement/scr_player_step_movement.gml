@@ -1,6 +1,12 @@
 /// scr_player_step_movement.gml
 function pl_step_movement() {
   #region MOVIMENTO
+  if (hitstun_steps > 0) {
+    hsp = pl_approach(hsp, 0, knockback_decel);
+    vsp = pl_approach(vsp, 0, knockback_decel);
+    exit;
+  }
+
   if (!is_attacking && !is_shooting) {
     var mag = sqrt(pl_ix*pl_ix + pl_iy*pl_iy);
 

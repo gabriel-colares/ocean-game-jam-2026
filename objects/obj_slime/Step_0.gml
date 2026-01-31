@@ -27,6 +27,16 @@ if (state != 2) {
 }
 #endregion
 
+#region HIT PAUSE
+if (hit_pause_timer > 0) {
+  hit_pause_timer--;
+  hsp = 0;
+  vsp = 0;
+  sl_set_sprite(sprIdle, 0);
+  exit;
+}
+#endregion
+
 #region HURT
 if (state == 2) {
   // para durante dano
@@ -104,4 +114,26 @@ if (!moving) {
 #region APPLY MOVE
 x += hsp;
 y += vsp;
+#endregion
+
+#region CONTACT DAMAGE
+if (has_player && contact_damage > 0) {
+  var pl_hit = instance_place(x, y, obj_player);
+  if (pl_hit != noone) {
+    var kx = 0;
+    var ky = 0;
+    var klen = sqrt(hsp*hsp + vsp*vsp);
+    if (klen > 0.01) {
+      kx = hsp / klen;
+      ky = vsp / klen;
+    } else if (has_player && dist > 0) {
+      kx = dx / dist;
+      ky = dy / dist;
+    }
+
+    if (pl_hit.pl_take_damage(contact_damage, kx, ky, hit_pause_steps)) {
+      hit_pause_timer = hit_pause_steps;
+    }
+  }
+}
 #endregion
