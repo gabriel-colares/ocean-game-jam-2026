@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"scr_player_step_direction",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"scr_player_step_direction",
+  "parent":{
+    "name":"Step",
+    "path":"folders/Scripts/Player/Step.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}
