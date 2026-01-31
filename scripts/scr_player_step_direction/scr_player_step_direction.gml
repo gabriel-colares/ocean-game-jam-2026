@@ -1,6 +1,6 @@
 /// scr_player_step_direction.gml
 function pl_step_direction_lock() {
-  #region DIREÇÃO (lock pela primeira tecla)
+  #region DIREÇÃO
   if (!is_attacking && !is_shooting) {
     var left_press  = pl_left_down  && !prev_left;
     var right_press = pl_right_down && !prev_right;
