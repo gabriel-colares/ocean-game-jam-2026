@@ -106,6 +106,8 @@ function pl_init_functions() {
     if (klen > 0) {
       var kx = _knock_x / klen;
       var ky = _knock_y / klen;
+      if (abs(kx) >= abs(ky)) facing = (kx < 0) ? 1 : 2;
+      else facing = (ky < 0) ? 3 : 0;
       hsp = kx * knockback_speed;
       vsp = ky * knockback_speed;
       x_resto = 0;
@@ -148,6 +150,16 @@ function pl_init_functions() {
     is_attacking = true;
     attack_timer = 0;
 
+    switch (facing) {
+      case 0: attack_lock_x = 0; attack_lock_y = 1; break;
+      case 3: attack_lock_x = 0; attack_lock_y = -1; break;
+      case 1: attack_lock_x = -1; attack_lock_y = 0; break;
+      case 2: attack_lock_x = 1; attack_lock_y = 0; break;
+    }
+
+    last_mx = attack_lock_x;
+    last_my = attack_lock_y;
+
     var spr_atk = pl_sprite_attack(facing);
     sprite_index = spr_atk;
     image_xscale = (facing == 2) ? -1 : 1;
@@ -167,6 +179,16 @@ function pl_init_functions() {
   self.pl_shoot_start = function() {
     is_shooting = true;
     shoot_timer = 0;
+
+    switch (facing) {
+      case 0: attack_lock_x = 0; attack_lock_y = 1; break;
+      case 3: attack_lock_x = 0; attack_lock_y = -1; break;
+      case 1: attack_lock_x = -1; attack_lock_y = 0; break;
+      case 2: attack_lock_x = 1; attack_lock_y = 0; break;
+    }
+
+    last_mx = attack_lock_x;
+    last_my = attack_lock_y;
 
     hsp = 0; vsp = 0;
     x_resto = 0; y_resto = 0;
