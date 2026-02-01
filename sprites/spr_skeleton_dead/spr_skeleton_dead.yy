@@ -25,8 +25,8 @@
   "nineSlice":null,
   "origin":4,
   "parent":{
-    "name":"dead",
-    "path":"folders/Sprites/Enemy/Skeleton/dead.yy",
+    "name":"Dead",
+    "path":"folders/Sprites/Enemy/Skeleton/Dead.yy",
   },
   "preMultiplyAlpha":false,
   "resourceType":"GMSprite",
