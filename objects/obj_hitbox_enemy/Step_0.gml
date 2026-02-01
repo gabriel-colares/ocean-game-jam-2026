@@ -1,6 +1,3 @@
-life--;
-if (life <= 0) { instance_destroy(); exit; }
-
 var x1 = x - (w * 0.5);
 var y1 = y - (h * 0.5);
 var x2 = x + (w * 0.5);
@@ -18,7 +15,7 @@ if (!hit_once) {
       case 2: kx = 1; ky = 0; break;
     }
 
-    if (!is_undefined(p.pl_take_damage)) {
+    if (variable_instance_exists(p, "pl_take_damage")) {
       p.pl_take_damage(dmg, kx, ky);
     }
 
@@ -27,3 +24,6 @@ if (!hit_once) {
     exit;
   }
 }
+
+life--;
+if (life <= 0) { instance_destroy(); exit; }

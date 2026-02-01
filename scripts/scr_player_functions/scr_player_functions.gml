@@ -68,6 +68,7 @@ function pl_init_functions() {
   #region VIDA
   hp_max = 5;
   hp = hp_max;
+  pl_dead = false;
 
   invuln_steps_max = max(1, ceil(room_speed * 0.2));
   invuln_steps = 0;
@@ -82,6 +83,10 @@ function pl_init_functions() {
     return invuln_steps > 0;
   };
 
+  self.pl_is_dead = function() {
+    return pl_dead;
+  };
+
   self.pl_take_damage = function(_amount) {
     var _knock_x = 0;
     var _knock_y = 0;
@@ -92,7 +97,7 @@ function pl_init_functions() {
     if (argument_count >= 4) _stun_steps = max(0, argument[3]);
 
     if (_amount <= 0) return false;
-    if (hp <= 0) return false;
+    if (hp <= 0 || pl_dead) return false;
     if (invuln_steps > 0) return false;
 
     hp = max(0, hp - _amount);
@@ -101,6 +106,17 @@ function pl_init_functions() {
 
     is_attacking = false;
     is_shooting  = false;
+
+    if (hp <= 0) {
+      pl_dead = true;
+      hsp = 0;
+      vsp = 0;
+      x_resto = 0;
+      y_resto = 0;
+      invuln_steps = 0;
+      hitstun_steps = 0;
+      return true;
+    }
 
     var klen = sqrt(_knock_x*_knock_x + _knock_y*_knock_y);
     if (klen > 0) {
