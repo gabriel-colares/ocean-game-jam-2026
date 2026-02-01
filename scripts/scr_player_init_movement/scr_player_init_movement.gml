@@ -6,7 +6,7 @@ function pl_init_movement() {
   x_resto = 0;
   y_resto = 0;
 
-  move_speed = 2.2;
+  move_speed = 1.6;
   accel_move = 0.95;
   decel_stop = 1.10;
   #endregion
