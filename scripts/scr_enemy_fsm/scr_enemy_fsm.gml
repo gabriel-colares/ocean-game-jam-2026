@@ -63,7 +63,7 @@ function en_fsm() {
     if (hitstun_t <= 0) {
       if (can_chase) {
         if (dist <= cfg.attack_range && atk_cd <= 0 && wants_attack) en_set_state(EN_STATE.ATTACK_WINDUP);
-        else if (!wants_attack || dist < cfg.attack_range * 0.9) en_set_state(EN_STATE.REPOSITION);
+        else if (!wants_attack) en_set_state(EN_STATE.REPOSITION);
         else en_set_state(EN_STATE.CHASE);
       } else {
         en_set_state(EN_STATE.PATROL);
@@ -80,7 +80,7 @@ function en_fsm() {
       return;
     }
 
-    if (!wants_attack || dist < cfg.attack_range * 0.9) {
+    if (!wants_attack) {
       en_set_state(EN_STATE.REPOSITION);
       return;
     }
@@ -96,7 +96,7 @@ function en_fsm() {
       return;
     }
 
-    if (wants_attack && dist > cfg.attack_range * 1.35) {
+    if (wants_attack) {
       en_set_state(EN_STATE.CHASE);
       return;
     }
@@ -124,8 +124,8 @@ function en_fsm() {
     if (state_t >= cfg.attack_recovery) {
       atk_cd = cfg.attack_cooldown;
       if (can_chase) {
-        if (!wants_attack || dist < cfg.attack_range * 0.9) en_set_state(EN_STATE.REPOSITION);
-        else en_set_state(EN_STATE.CHASE);
+        if (wants_attack) en_set_state(EN_STATE.CHASE);
+        else en_set_state(EN_STATE.REPOSITION);
       } else {
         en_set_state(EN_STATE.PATROL);
       }

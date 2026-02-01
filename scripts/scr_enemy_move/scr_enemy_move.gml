@@ -35,7 +35,7 @@ function en_move_target_point() {
   }
 
   if (has_los || last_seen_t <= cfg.lose_sight_time) {
-    var keep = max(0, cfg.attack_range - 4);
+    var keep = 0;
     var dx = x - target_id.x;
     var dy = y - target_id.y;
     var d = sqrt(dx * dx + dy * dy);
@@ -48,6 +48,31 @@ function en_move_target_point() {
   }
 
   return { x: last_seen_x, y: last_seen_y };
+}
+
+function en_move_detour_point(_tx, _ty) {
+  if (solid_obj == -1) return { x: _tx, y: _ty };
+  if (!collision_line(x, y, _tx, _ty, solid_obj, true, true)) return { x: _tx, y: _ty };
+
+  var dir = point_direction(x, y, _tx, _ty);
+
+  for (var i = 0; i < 4; i++) {
+    var d = 24 + i * 16;
+
+    var cx1 = x + lengthdir_x(d, dir + 90);
+    var cy1 = y + lengthdir_y(d, dir + 90);
+    if (!place_meeting(cx1, cy1, solid_obj) && !collision_line(x, y, cx1, cy1, solid_obj, true, true)) {
+      return { x: cx1, y: cy1 };
+    }
+
+    var cx2 = x + lengthdir_x(d, dir - 90);
+    var cy2 = y + lengthdir_y(d, dir - 90);
+    if (!place_meeting(cx2, cy2, solid_obj) && !collision_line(x, y, cx2, cy2, solid_obj, true, true)) {
+      return { x: cx2, y: cy2 };
+    }
+  }
+
+  return { x: _tx, y: _ty };
 }
 
 function en_move_separation() {
@@ -97,8 +122,9 @@ function en_move() {
   }
 
   var tp = en_move_target_point();
-  target_x = tp.x;
-  target_y = tp.y;
+  var dp = en_move_detour_point(tp.x, tp.y);
+  target_x = dp.x;
+  target_y = dp.y;
 
   var dx = target_x - x;
   var dy = target_y - y;
@@ -112,7 +138,7 @@ function en_move() {
     var nx = dx / dist;
     var ny = dy / dist;
     var spd = cfg.move_speed;
-    var arrive_r = 16;
+    var arrive_r = 8;
     if (dist < arrive_r) spd *= (dist / arrive_r);
     des_h = nx * spd;
     des_v = ny * spd;
@@ -162,5 +188,39 @@ function en_move_apply_collision() {
   } else {
     x += mx;
     y += my;
+  }
+
+  var p = instance_find(obj_player, 0);
+  if (instance_exists(p)) {
+    var min_d = 14;
+    var dx = x - p.x;
+    var dy = y - p.y;
+    var d2 = dx * dx + dy * dy;
+    if (d2 < (min_d * min_d)) {
+      if (d2 <= 0.001) { dx = 1; dy = 0; d2 = 1; }
+      var d = sqrt(d2);
+      var overlap = min_d - d;
+      var nx = dx / d;
+      var ny = dy / d;
+      var px = round(nx * overlap);
+      var py = round(ny * overlap);
+
+      if (solid_obj != -1) {
+        var sx2 = sign(px);
+        repeat (abs(px)) {
+          if (!place_meeting(x + sx2, y, solid_obj)) x += sx2;
+          else break;
+        }
+
+        var sy2 = sign(py);
+        repeat (abs(py)) {
+          if (!place_meeting(x, y + sy2, solid_obj)) y += sy2;
+          else break;
+        }
+      } else {
+        x += px;
+        y += py;
+      }
+    }
   }
 }

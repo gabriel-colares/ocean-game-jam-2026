@@ -55,18 +55,18 @@ function en_cfg_get(_kind) {
       sep_force: 0.12,
 
       attack_range: 18,
-      attack_windup: 16,
-      attack_active: 6,
-      attack_recovery: 18,
-      attack_cooldown: 25,
+      attack_windup: 2,
+      attack_active: 1,
+      attack_recovery: 6,
+      attack_cooldown: 12,
 
       max_attackers: 2,
-      slot_radius: 26,
+      slot_radius: 22,
       slot_hold_ms: 250,
 
       idle_hold_steps: 12,
       walk_hold_steps: 8,
-      attack_hold_steps: 10,
+      attack_hold_steps: 2,
 
       spr: {
         idle: en_spr_dir3(spr_skeleton_idle_down, spr_skeleton_idle_left, spr_skeleton_idle_up),
@@ -143,18 +143,18 @@ function en_cfg_get(_kind) {
       sep_force: 0.10,
 
       attack_range: 20,
-      attack_windup: 18,
-      attack_active: 7,
-      attack_recovery: 20,
-      attack_cooldown: 30,
+      attack_windup: 2,
+      attack_active: 1,
+      attack_recovery: 7,
+      attack_cooldown: 14,
 
       max_attackers: 1,
-      slot_radius: 28,
+      slot_radius: 16,
       slot_hold_ms: 280,
 
       idle_hold_steps: 14,
       walk_hold_steps: 8,
-      attack_hold_steps: 11,
+      attack_hold_steps: 2,
 
       spr: {
         idle: en_spr_dir3(spr_nita_idle_down, spr_nita_idle_left, spr_nita_idle_down),
@@ -193,7 +193,7 @@ function en_cfg_get(_kind) {
       attack_cooldown: 18,
 
       max_attackers: 2,
-      slot_radius: 22,
+      slot_radius: 12,
       slot_hold_ms: 200,
 
       idle_hold_steps: 12,
