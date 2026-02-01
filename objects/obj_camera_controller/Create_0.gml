@@ -1,6 +1,8 @@
 view_w = 21 * 16;
 view_h = 12 * 16;
 
+global.en_debug = false;
+
 follow_lerp_x = 0.16;
 follow_lerp_y = 0.10;
 
