@@ -38,7 +38,7 @@ var p = collision_circle(x, y, 6, obj_player, false, true);
 if (instance_exists(p)) {
   var kx = vx;
   var ky = vy;
-  if (!is_undefined(p.pl_take_damage)) p.pl_take_damage(dmg, kx, ky);
+  if (variable_instance_exists(p, "pl_take_damage")) p.pl_take_damage(dmg, kx, ky);
   instance_destroy();
   exit;
 }

@@ -30,7 +30,8 @@ function en_move_target_point() {
       return p;
     }
 
-    var a = (id * 23 + (current_time * 0.06)) mod 360;
+    var a = (id * 23 + (current_time * 0.06));
+    a = a - floor(a / 360) * 360;
     return { x: target_id.x + lengthdir_x(cfg.slot_radius, a), y: target_id.y + lengthdir_y(cfg.slot_radius, a) };
   }
 
@@ -52,24 +53,81 @@ function en_move_target_point() {
 
 function en_move_detour_point(_tx, _ty) {
   if (solid_obj == -1) return { x: _tx, y: _ty };
-  if (!collision_line(x, y, _tx, _ty, solid_obj, true, true)) return { x: _tx, y: _ty };
+  if (!collision_line(x, y, _tx, _ty, solid_obj, true, true)) {
+    if (variable_instance_exists(self, "nav_following")) nav_following = false;
+    if (variable_instance_exists(self, "nav_has_wp")) nav_has_wp = false;
+    return { x: _tx, y: _ty };
+  }
+
+  if (!variable_instance_exists(self, "nav_following")) nav_following = false;
+  if (!variable_instance_exists(self, "nav_side")) nav_side = (irandom(1) == 0) ? 1 : -1;
+  if (!variable_instance_exists(self, "nav_stuck_t")) nav_stuck_t = 0;
+  if (!variable_instance_exists(self, "nav_hit_x")) nav_hit_x = false;
+  if (!variable_instance_exists(self, "nav_hit_y")) nav_hit_y = false;
+  if (!variable_instance_exists(self, "nav_has_wp")) nav_has_wp = false;
+  if (!variable_instance_exists(self, "nav_wp_x")) nav_wp_x = x;
+  if (!variable_instance_exists(self, "nav_wp_y")) nav_wp_y = y;
+  if (!variable_instance_exists(self, "nav_wp_t")) nav_wp_t = 0;
+
+  var keep = 6;
+  if (variable_struct_exists(cfg, "wall_keep")) keep = cfg.wall_keep;
 
   var dir = point_direction(x, y, _tx, _ty);
 
-  for (var i = 0; i < 4; i++) {
-    var d = 24 + i * 16;
+  if (nav_stuck_t >= 10) {
+    nav_side = -nav_side;
+    nav_stuck_t = 0;
+    nav_following = true;
+    nav_has_wp = false;
+  } else if (nav_hit_x || nav_hit_y) {
+    nav_following = true;
+  }
 
-    var cx1 = x + lengthdir_x(d, dir + 90);
-    var cy1 = y + lengthdir_y(d, dir + 90);
-    if (!place_meeting(cx1, cy1, solid_obj) && !collision_line(x, y, cx1, cy1, solid_obj, true, true)) {
-      return { x: cx1, y: cy1 };
-    }
+  if (!nav_following) nav_following = true;
 
-    var cx2 = x + lengthdir_x(d, dir - 90);
-    var cy2 = y + lengthdir_y(d, dir - 90);
-    if (!place_meeting(cx2, cy2, solid_obj) && !collision_line(x, y, cx2, cy2, solid_obj, true, true)) {
-      return { x: cx2, y: cy2 };
+  if (nav_has_wp) {
+    nav_wp_t++;
+    var dd = point_distance(x, y, nav_wp_x, nav_wp_y);
+    if (dd <= 6 || nav_wp_t >= 40 || place_meeting(nav_wp_x, nav_wp_y, solid_obj) || collision_line(x, y, nav_wp_x, nav_wp_y, solid_obj, true, true) || instance_exists(collision_circle(nav_wp_x, nav_wp_y, keep, solid_obj, true, true))) {
+      nav_has_wp = false;
+    } else {
+      return { x: nav_wp_x, y: nav_wp_y };
     }
+  }
+
+  static fwd_d = [0, 12, 22, 34];
+  static side_d = [18, 30, 44, 60];
+
+  var best_x = _tx;
+  var best_y = _ty;
+  var best_score = 1000000000000;
+
+  for (var fi = 0; fi < array_length_1d(fwd_d); fi++) {
+    var fwd = fwd_d[fi];
+    for (var si = 0; si < array_length_1d(side_d); si++) {
+      var side = side_d[si];
+      for (var sp = 0; sp < 2; sp++) {
+        var sm = (sp == 0) ? nav_side : -nav_side;
+        var cx = x + lengthdir_x(fwd, dir) + lengthdir_x(side, dir + sm * 90);
+        var cy = y + lengthdir_y(fwd, dir) + lengthdir_y(side, dir + sm * 90);
+
+        if (!place_meeting(cx, cy, solid_obj) && !collision_line(x, y, cx, cy, solid_obj, true, true) && !instance_exists(collision_circle(cx, cy, keep, solid_obj, true, true))) {
+          var sc = point_distance(cx, cy, _tx, _ty);
+          if (!collision_line(cx, cy, _tx, _ty, solid_obj, true, true)) sc -= 80;
+          if (nav_hit_x && abs(cy - y) > abs(cx - x)) sc -= 10;
+          if (nav_hit_y && abs(cx - x) > abs(cy - y)) sc -= 10;
+          if (sc < best_score) { best_score = sc; best_x = cx; best_y = cy; }
+        }
+      }
+    }
+  }
+
+  if (best_score < 1000000000000) {
+    nav_wp_x = best_x;
+    nav_wp_y = best_y;
+    nav_wp_t = 0;
+    nav_has_wp = true;
+    return { x: best_x, y: best_y };
   }
 
   return { x: _tx, y: _ty };
@@ -106,6 +164,7 @@ function en_move_separation() {
 
 function en_move() {
   if (dead) { hsp = 0; vsp = 0; return; }
+  if (variable_instance_exists(self, "nav_want_move")) nav_want_move = false;
 
   if (state == EN_STATE.ATTACK_WINDUP || state == EN_STATE.ATTACK_ACTIVE || state == EN_STATE.ATTACK_RECOVERY) {
     hsp = en_approach(hsp, 0, cfg.decel_stop);
@@ -131,6 +190,7 @@ function en_move() {
   var dist = sqrt(dx * dx + dy * dy);
 
   var want = (state == EN_STATE.CHASE || state == EN_STATE.REPOSITION);
+  nav_want_move = want;
   var des_h = 0;
   var des_v = 0;
 
@@ -164,6 +224,16 @@ function en_move() {
 }
 
 function en_move_apply_collision() {
+  if (!variable_instance_exists(self, "nav_hit_x")) nav_hit_x = false;
+  if (!variable_instance_exists(self, "nav_hit_y")) nav_hit_y = false;
+  if (!variable_instance_exists(self, "nav_last_x")) nav_last_x = x;
+  if (!variable_instance_exists(self, "nav_last_y")) nav_last_y = y;
+  if (!variable_instance_exists(self, "nav_stuck_t")) nav_stuck_t = 0;
+  if (!variable_instance_exists(self, "nav_want_move")) nav_want_move = false;
+
+  nav_hit_x = false;
+  nav_hit_y = false;
+
   x_rem += hsp;
   y_rem += vsp;
 
@@ -177,13 +247,13 @@ function en_move_apply_collision() {
     var sx = sign(mx);
     repeat (abs(mx)) {
       if (!place_meeting(x + sx, y, solid_obj)) x += sx;
-      else { hsp = 0; x_rem = 0; break; }
+      else { nav_hit_x = true; hsp = 0; x_rem = 0; break; }
     }
 
     var sy = sign(my);
     repeat (abs(my)) {
       if (!place_meeting(x, y + sy, solid_obj)) y += sy;
-      else { vsp = 0; y_rem = 0; break; }
+      else { nav_hit_y = true; vsp = 0; y_rem = 0; break; }
     }
   } else {
     x += mx;
@@ -223,4 +293,53 @@ function en_move_apply_collision() {
       }
     }
   }
+
+  if (solid_obj != -1) {
+    var keep = 6;
+    if (variable_struct_exists(cfg, "wall_keep")) keep = cfg.wall_keep;
+
+    if (keep > 0 && instance_exists(collision_circle(x, y, keep, solid_obj, true, true))) {
+      repeat (12) {
+        if (!instance_exists(collision_circle(x, y, keep, solid_obj, true, true))) break;
+
+        var moved = false;
+        var cdx;
+        var cdy;
+        if (nav_hit_x) {
+          cdx = [0, 0, 1, -1, 1, -1, 1, -1];
+          cdy = [1, -1, 0, 0, 1, 1, -1, -1];
+        } else if (nav_hit_y) {
+          cdx = [1, -1, 0, 0, 1, 1, -1, -1];
+          cdy = [0, 0, 1, -1, 1, -1, 1, -1];
+        } else {
+          cdx = [1, -1, 0, 0, 1, -1, 1, -1];
+          cdy = [0, 0, 1, -1, 1, 1, -1, -1];
+        }
+
+        for (var i = 0; i < array_length_1d(cdx); i++) {
+          var nx = x + cdx[i];
+          var ny = y + cdy[i];
+          if (!place_meeting(nx, ny, solid_obj) && !instance_exists(collision_circle(nx, ny, keep, solid_obj, true, true))) {
+            x = nx;
+            y = ny;
+            moved = true;
+            break;
+          }
+        }
+
+        if (!moved) break;
+      }
+    }
+  }
+
+  if (nav_want_move) {
+    var md = abs(x - nav_last_x) + abs(y - nav_last_y);
+    if (md <= 0) nav_stuck_t++;
+    else nav_stuck_t = 0;
+  } else {
+    nav_stuck_t = 0;
+  }
+
+  nav_last_x = x;
+  nav_last_y = y;
 }

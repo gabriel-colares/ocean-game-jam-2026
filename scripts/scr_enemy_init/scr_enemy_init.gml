@@ -24,6 +24,19 @@ function en_init() {
   target_x = x;
   target_y = y;
 
+  nav_want_move = false;
+  nav_last_x = x;
+  nav_last_y = y;
+  nav_stuck_t = 0;
+  nav_hit_x = false;
+  nav_hit_y = false;
+  nav_following = false;
+  nav_side = (irandom(1) == 0) ? 1 : -1;
+  nav_has_wp = false;
+  nav_wp_x = x;
+  nav_wp_y = y;
+  nav_wp_t = 0;
+
   slot_id = -1;
   wants_attack = false;
   slot_x = x;

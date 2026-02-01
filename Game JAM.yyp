@@ -63,6 +63,7 @@
     {"id":{"name":"obj_proj_enemy","path":"objects/obj_proj_enemy/obj_proj_enemy.yy",},},
     {"id":{"name":"obj_solid","path":"objects/obj_solid/obj_solid.yy",},},
     {"id":{"name":"obj_spear_proj","path":"objects/obj_spear_proj/obj_spear_proj.yy",},},
+    {"id":{"name":"Aldeia","path":"rooms/Aldeia/Aldeia.yy",},},
     {"id":{"name":"Room","path":"rooms/Room/Room.yy",},},
     {"id":{"name":"scr_enemy_anim","path":"scripts/scr_enemy_anim/scr_enemy_anim.yy",},},
     {"id":{"name":"scr_enemy_combat","path":"scripts/scr_enemy_combat/scr_enemy_combat.yy",},},
@@ -155,6 +156,7 @@
   "resourceVersion":"2.0",
   "RoomOrderNodes":[
     {"roomId":{"name":"Room","path":"rooms/Room/Room.yy",},},
+    {"roomId":{"name":"Aldeia","path":"rooms/Aldeia/Aldeia.yy",},},
   ],
   "templateType":"game",
   "TextureGroups":[
