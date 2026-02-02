@@ -74,7 +74,11 @@ if (dead_dialog_active) {
 
     draw_set_halign(fa_left);
     draw_set_valign(fa_top);
-    draw_text_ext(x1 + 16, y1 + 14, dead_dialog_text, -1, 26);
+    var pad_l = 16;
+    var pad_r = 16;
+    var pad_t = 14;
+    var wrap_w = max(1, (x2 - x1) - (pad_l + pad_r));
+    draw_text_ext(x1 + pad_l, y1 + pad_t, dead_dialog_text, 18, wrap_w);
 
     draw_set_font(-1);
     exit;
