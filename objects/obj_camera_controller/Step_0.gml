@@ -240,6 +240,12 @@ if (intro_active) {
         intro_fade_alpha = 0;
         intro_fade_out = false;
         target.pl_dialog_lock = false;
+        if (!variable_global_exists("bgm_started")) global.bgm_started = false;
+        if (!global.bgm_started) {
+            global.bgm_started = true;
+            var snd_bgm = asset_get_index("trilha_sonora");
+            if (snd_bgm != -1) audio_play_sound(snd_bgm, 0, true);
+        }
     }
 } else {
     if (saci_dialog_active) {

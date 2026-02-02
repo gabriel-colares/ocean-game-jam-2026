@@ -52,6 +52,8 @@
     {"name":"inst_43318FE2","path":"rooms/Aldeia_3/Aldeia_3.yy",},
     {"name":"inst_2392E41A","path":"rooms/Aldeia_3/Aldeia_3.yy",},
     {"name":"inst_3EF3CEBC","path":"rooms/Aldeia_3/Aldeia_3.yy",},
+    {"name":"inst_7C420F06","path":"rooms/Aldeia_3/Aldeia_3.yy",},
+    {"name":"inst_32EF7BBC","path":"rooms/Aldeia_3/Aldeia_3.yy",},
   ],
   "isDnd":false,
   "layers":[
@@ -102,6 +104,8 @@
         {"$GMRInstance":"v4","%Name":"inst_43318FE2","colour":4294967295,"frozen":false,"hasCreationCode":false,"ignore":false,"imageIndex":0,"imageSpeed":1.0,"inheritCode":false,"inheritedItemId":null,"inheritItemSettings":false,"isDnd":false,"name":"inst_43318FE2","objectId":{"name":"obj_enemy_nita","path":"objects/obj_enemy_nita/obj_enemy_nita.yy",},"properties":[],"resourceType":"GMRInstance","resourceVersion":"2.0","rotation":0.0,"scaleX":1.0,"scaleY":1.0,"x":320.0,"y":320.0,},
         {"$GMRInstance":"v4","%Name":"inst_2392E41A","colour":4294967295,"frozen":false,"hasCreationCode":false,"ignore":false,"imageIndex":0,"imageSpeed":1.0,"inheritCode":false,"inheritedItemId":null,"inheritItemSettings":false,"isDnd":false,"name":"inst_2392E41A","objectId":{"name":"obj_enemy_nita","path":"objects/obj_enemy_nita/obj_enemy_nita.yy",},"properties":[],"resourceType":"GMRInstance","resourceVersion":"2.0","rotation":0.0,"scaleX":1.0,"scaleY":1.0,"x":192.0,"y":352.0,},
         {"$GMRInstance":"v4","%Name":"inst_3EF3CEBC","colour":4294967295,"frozen":false,"hasCreationCode":false,"ignore":false,"imageIndex":0,"imageSpeed":1.0,"inheritCode":false,"inheritedItemId":null,"inheritItemSettings":false,"isDnd":false,"name":"inst_3EF3CEBC","objectId":{"name":"obj_enemy_nita","path":"objects/obj_enemy_nita/obj_enemy_nita.yy",},"properties":[],"resourceType":"GMRInstance","resourceVersion":"2.0","rotation":0.0,"scaleX":1.0,"scaleY":1.0,"x":256.0,"y":432.0,},
+        {"$GMRInstance":"v4","%Name":"inst_7C420F06","colour":4294967295,"frozen":false,"hasCreationCode":false,"ignore":false,"imageIndex":0,"imageSpeed":1.0,"inheritCode":false,"inheritedItemId":null,"inheritItemSettings":false,"isDnd":false,"name":"inst_7C420F06","objectId":{"name":"obj_solid","path":"objects/obj_solid/obj_solid.yy",},"properties":[],"resourceType":"GMRInstance","resourceVersion":"2.0","rotation":0.0,"scaleX":27.0,"scaleY":1.0,"x":64.0,"y":-16.0,},
+        {"$GMRInstance":"v4","%Name":"inst_32EF7BBC","colour":4294967295,"frozen":false,"hasCreationCode":false,"ignore":false,"imageIndex":0,"imageSpeed":1.0,"inheritCode":false,"inheritedItemId":null,"inheritItemSettings":false,"isDnd":false,"name":"inst_32EF7BBC","objectId":{"name":"obj_scene_next","path":"objects/obj_scene_next/obj_scene_next.yy",},"properties":[],"resourceType":"GMRInstance","resourceVersion":"2.0","rotation":0.0,"scaleX":1.0,"scaleY":5.0,"x":496.0,"y":384.0,},
       ],"layers":[],"name":"Instances","properties":[],"resourceType":"GMRInstanceLayer","resourceVersion":"2.0","userdefinedDepth":false,"visible":true,},
     {"$GMRTileLayer":"","%Name":"Houses","depth":100,"effectEnabled":true,"effectType":null,"gridX":32,"gridY":32,"hierarchyFrozen":false,"inheritLayerDepth":false,"inheritLayerSettings":false,"inheritSubLayers":true,"inheritVisibility":true,"layers":[],"name":"Houses","properties":[],"resourceType":"GMRTileLayer","resourceVersion":"2.0","tiles":{"SerialiseHeight":31,"SerialiseWidth":31,"TileCompressedData":[
           -31,-2147483648,-29,0,-3,-2147483648,-28,0,-3,-2147483648,-28,0,-3,-2147483648,-28,0,-3,-2147483648,

@@ -51,8 +51,11 @@ if (instance_exists(e)) {
     if (st > global.cam_shake_t) { global.cam_shake_t = st; global.cam_shake_tmax = st; }
     global.cam_shake_mag = max(global.cam_shake_mag, 3);
 
-    for (var i_fx = 0; i_fx < 6; i_fx++) {
-      effect_create_above(ef_spark, e.x + random_range(-4, 4), e.y + random_range(-4, 4), 1, c_white);
+    if (irandom(2) == 0) {
+      var fx_col = make_color_rgb(210, 210, 210);
+      for (var i_fx = 0; i_fx < 2; i_fx++) {
+        effect_create_above(ef_spark, e.x + random_range(-2, 2), e.y + random_range(-2, 2), random_range(0.35, 0.55), fx_col);
+      }
     }
   }
 

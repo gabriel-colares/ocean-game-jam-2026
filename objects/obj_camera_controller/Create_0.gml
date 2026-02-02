@@ -10,6 +10,7 @@ if (ui_font == -1) ui_font = asset_get_index("fnt_Mgs");
 if (ui_font == -1) ui_font = -1;
 
 if (!variable_global_exists("intro_pending")) global.intro_pending = false;
+if (!variable_global_exists("bgm_started")) global.bgm_started = false;
 
 intro_pages = [
   "Introducao\n\nAnahi desperta com um silencio estranho.\nNao ha vozes, nao ha passos, nao ha vida.",
@@ -97,6 +98,10 @@ if (room == Menu) {
     if (layer_anahi != -1) layer_set_visible(layer_anahi, true);
     var layer_mask = layer_get_id("Anahi_Mask");
     if (layer_mask != -1) layer_set_visible(layer_mask, false);
+
+    global.bgm_started = false;
+    var snd_bgm = asset_get_index("trilha_sonora");
+    if (snd_bgm != -1) audio_stop_sound(snd_bgm);
 
     audio_stop_sound(menu);
     audio_play_sound(menu, 0, true);
