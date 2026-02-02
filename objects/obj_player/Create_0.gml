@@ -20,6 +20,14 @@ if (!variable_global_exists("respawn_room")) {
   global.respawn_y = y;
   global.respawn_apply = false;
   global.respawn_restarting = false;
+} else {
+  if (!variable_global_exists("respawn_restarting")) global.respawn_restarting = false;
+  if (!global.respawn_restarting) {
+    global.respawn_room = room;
+    global.respawn_x = x;
+    global.respawn_y = y;
+    global.respawn_apply = false;
+  }
 }
 
 if (!instance_exists(obj_respawn)) {

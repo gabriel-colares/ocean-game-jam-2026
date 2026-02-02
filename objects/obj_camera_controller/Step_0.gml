@@ -230,6 +230,12 @@ if (intro_active) {
         if (intro_page >= array_length_1d(intro_pages)) {
             intro_active = false;
             intro_fade_out = true;
+            if (!variable_global_exists("bgm_started")) global.bgm_started = false;
+            if (!global.bgm_started) {
+                global.bgm_started = true;
+                var snd_bgm = asset_get_index("trilha_sonora");
+                if (snd_bgm != -1) audio_play_sound(snd_bgm, 0, true);
+            }
         }
     }
 } else if (intro_fade_out) {

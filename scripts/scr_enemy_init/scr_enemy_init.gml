@@ -1,5 +1,5 @@
 function en_init() {
-  if (is_undefined(enemy_kind)) enemy_kind = "skeleton";
+  if (!variable_instance_exists(self, "enemy_kind")) enemy_kind = "skeleton";
   cfg = en_cfg_get(enemy_kind);
 
   state = EN_STATE.IDLE;

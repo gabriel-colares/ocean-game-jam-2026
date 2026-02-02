@@ -85,10 +85,8 @@ if (death_panel_active) {
         if (i == death_panel_selected) {
             draw_set_color(c_aqua);
             draw_rectangle(x1 + 24, yy - 6, x2 - 24, yy + 28, true);
-            draw_set_color(c_black);
-        } else {
-            draw_set_color(c_white);
         }
+        draw_set_color(c_white);
 
         var label = (i == 0) ? "RESTART" : "SAIR";
         draw_text(x1 + w * 0.5, yy, label);
