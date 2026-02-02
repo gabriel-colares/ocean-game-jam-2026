@@ -31,8 +31,8 @@
   "resourceVersion":"2.0",
   "solid":false,
   "spriteId":{
-    "name":"bullet",
-    "path":"sprites/bullet/bullet.yy",
+    "name":"spr_lanca_down",
+    "path":"sprites/spr_lanca_down/spr_lanca_down.yy",
   },
   "spriteMaskId":null,
   "visible":true,

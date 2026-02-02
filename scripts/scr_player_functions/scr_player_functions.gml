@@ -236,6 +236,17 @@ function pl_init_functions() {
         if (variable_instance_exists(e, "x_rem")) e.x_rem = 0;
         if (variable_instance_exists(e, "y_rem")) e.y_rem = 0;
         if (variable_instance_exists(e, "hitstun_t")) e.hitstun_t = max(e.hitstun_t, 12);
+
+        if (!variable_global_exists("cam_shake_t")) global.cam_shake_t = 0;
+        if (!variable_global_exists("cam_shake_mag")) global.cam_shake_mag = 0;
+        if (!variable_global_exists("cam_shake_tmax")) global.cam_shake_tmax = 0;
+        var st = max(1, ceil(room_speed * 0.12));
+        if (st > global.cam_shake_t) { global.cam_shake_t = st; global.cam_shake_tmax = st; }
+        global.cam_shake_mag = max(global.cam_shake_mag, 3);
+
+        for (var i_fx = 0; i_fx < 6; i_fx++) {
+          effect_create_above(ef_spark, e.x + random_range(-4, 4), e.y + random_range(-4, 4), 1, c_white);
+        }
       }
     }
     ds_list_destroy(lst);

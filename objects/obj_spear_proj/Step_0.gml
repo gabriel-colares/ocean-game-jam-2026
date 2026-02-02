@@ -4,12 +4,27 @@ if (!inited) {
 
   vx = 0;
   vy = 0;
+  image_angle = 0;
+  image_xscale = 1;
 
   switch (dir) {
-    case 0: vx = 0;  vy = 1;  image_angle = 90;  break; // down
-    case 1: vx = -1; vy = 0;  image_angle = 180; break; // left
-    case 2: vx = 1;  vy = 0;  image_angle = 0;   break; // right
-    case 3: vx = 0;  vy = -1; image_angle = 270; break; // up
+    case 0:
+      vx = 0; vy = 1;
+      sprite_index = spr_lanca_down;
+      break;
+    case 1:
+      vx = -1; vy = 0;
+      sprite_index = spr_lanca_left;
+      break;
+    case 2:
+      vx = 1; vy = 0;
+      sprite_index = spr_lanca_left;
+      image_xscale = -1;
+      break;
+    case 3:
+      vx = 0; vy = -1;
+      sprite_index = spr_lanca_up;
+      break;
   }
 }
 #endregion
@@ -25,6 +40,19 @@ if (instance_exists(e)) {
       if (!variable_instance_exists(e, "slow_mult")) e.slow_mult = 0.55;
       if (!variable_instance_exists(e, "slow_t")) e.slow_t = 0;
       e.slow_t = max(e.slow_t, ceil(room_speed * 0.75));
+    }
+  }
+
+  if (did) {
+    if (!variable_global_exists("cam_shake_t")) global.cam_shake_t = 0;
+    if (!variable_global_exists("cam_shake_mag")) global.cam_shake_mag = 0;
+    if (!variable_global_exists("cam_shake_tmax")) global.cam_shake_tmax = 0;
+    var st = max(1, ceil(room_speed * 0.12));
+    if (st > global.cam_shake_t) { global.cam_shake_t = st; global.cam_shake_tmax = st; }
+    global.cam_shake_mag = max(global.cam_shake_mag, 3);
+
+    for (var i_fx = 0; i_fx < 6; i_fx++) {
+      effect_create_above(ef_spark, e.x + random_range(-4, 4), e.y + random_range(-4, 4), 1, c_white);
     }
   }
 

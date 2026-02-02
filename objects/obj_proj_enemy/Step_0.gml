@@ -2,12 +2,27 @@ if (!inited) {
   inited = true;
   vx = 0;
   vy = 0;
+  image_angle = 0;
+  image_xscale = 1;
 
   switch (dir) {
-    case 0: vx = 0;  vy = 1;  image_angle = 90;  break;
-    case 1: vx = -1; vy = 0;  image_angle = 180; break;
-    case 2: vx = 1;  vy = 0;  image_angle = 0;   break;
-    case 3: vx = 0;  vy = -1; image_angle = 270; break;
+    case 0:
+      vx = 0; vy = 1;
+      sprite_index = spr_lanca_down;
+      break;
+    case 1:
+      vx = -1; vy = 0;
+      sprite_index = spr_lanca_left;
+      break;
+    case 2:
+      vx = 1; vy = 0;
+      sprite_index = spr_lanca_left;
+      image_xscale = -1;
+      break;
+    case 3:
+      vx = 0; vy = -1;
+      sprite_index = spr_lanca_up;
+      break;
   }
 }
 

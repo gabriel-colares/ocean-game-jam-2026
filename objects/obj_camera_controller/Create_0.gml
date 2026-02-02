@@ -54,6 +54,10 @@ death_panel_nav_cd = 0;
 
 if (!variable_global_exists("respawn_target_active")) global.respawn_target_active = false;
 
+if (!variable_global_exists("cam_shake_t")) global.cam_shake_t = 0;
+if (!variable_global_exists("cam_shake_mag")) global.cam_shake_mag = 0;
+if (!variable_global_exists("cam_shake_tmax")) global.cam_shake_tmax = 0;
+
 if (!variable_global_exists("saci_stage")) global.saci_stage = 0;
 
 saci_dialog_active = false;

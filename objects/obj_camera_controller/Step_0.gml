@@ -427,4 +427,27 @@ cy = clamp(cy, bound_t, bound_b - view_h);
 cx = floor(cx);
 cy = floor(cy);
 
-camera_set_view_pos(cam, cx, cy);
+var view_x = cx;
+var view_y = cy;
+
+if (variable_global_exists("cam_shake_t") && global.cam_shake_t > 0) {
+    if (!variable_global_exists("cam_shake_mag")) global.cam_shake_mag = 0;
+    if (!variable_global_exists("cam_shake_tmax")) global.cam_shake_tmax = global.cam_shake_t;
+    global.cam_shake_tmax = max(1, global.cam_shake_tmax);
+
+    var shake_k = global.cam_shake_t / global.cam_shake_tmax;
+    var shake_mag = ceil(global.cam_shake_mag * shake_k);
+    if (shake_mag > 0) {
+        view_x += irandom_range(-shake_mag, shake_mag);
+        view_y += irandom_range(-shake_mag, shake_mag);
+    }
+
+    global.cam_shake_t--;
+    if (global.cam_shake_t <= 0) {
+        global.cam_shake_t = 0;
+        global.cam_shake_mag = 0;
+        global.cam_shake_tmax = 0;
+    }
+}
+
+camera_set_view_pos(cam, view_x, view_y);
