@@ -230,11 +230,11 @@ if (intro_active) {
         if (intro_page >= array_length_1d(intro_pages)) {
             intro_active = false;
             intro_fade_out = true;
-            if (!variable_global_exists("bgm_started")) global.bgm_started = false;
-            if (!global.bgm_started) {
+            var snd_bgm = asset_get_index("trilha_sonora");
+            if (snd_bgm != -1) {
+                if (!audio_is_playing(snd_bgm)) audio_play_sound(snd_bgm, 0, true);
+                if (!variable_global_exists("bgm_started")) global.bgm_started = false;
                 global.bgm_started = true;
-                var snd_bgm = asset_get_index("trilha_sonora");
-                if (snd_bgm != -1) audio_play_sound(snd_bgm, 0, true);
             }
         }
     }
@@ -246,14 +246,20 @@ if (intro_active) {
         intro_fade_alpha = 0;
         intro_fade_out = false;
         target.pl_dialog_lock = false;
-        if (!variable_global_exists("bgm_started")) global.bgm_started = false;
-        if (!global.bgm_started) {
+        var snd_bgm = asset_get_index("trilha_sonora");
+        if (snd_bgm != -1) {
+            if (!audio_is_playing(snd_bgm)) audio_play_sound(snd_bgm, 0, true);
+            if (!variable_global_exists("bgm_started")) global.bgm_started = false;
             global.bgm_started = true;
-            var snd_bgm = asset_get_index("trilha_sonora");
-            if (snd_bgm != -1) audio_play_sound(snd_bgm, 0, true);
         }
     }
 } else {
+    var snd_bgm = asset_get_index("trilha_sonora");
+    if (snd_bgm != -1) {
+        if (!audio_is_playing(snd_bgm)) audio_play_sound(snd_bgm, 0, true);
+        if (!variable_global_exists("bgm_started")) global.bgm_started = false;
+        global.bgm_started = true;
+    }
     if (saci_dialog_active) {
         dead_prompt_obj = noone;
         target.pl_dialog_lock = true;

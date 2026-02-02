@@ -261,6 +261,8 @@ function pl_init_functions() {
     if (!pl_has_mask) return;
     is_shooting = true;
     shoot_timer = 0;
+    var snd_atk = asset_get_index("player_attack");
+    if (snd_atk != -1) audio_play_sound(snd_atk, 1, false);
 
     switch (facing) {
       case 0: attack_lock_x = 0; attack_lock_y = 1; break;
