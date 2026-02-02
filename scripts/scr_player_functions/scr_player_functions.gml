@@ -66,7 +66,8 @@ function pl_init_functions() {
   #endregion
 
   #region VIDA
-  hp_max = 3;
+  if (!variable_global_exists("player_hp_max")) global.player_hp_max = 3;
+  hp_max = max(1, global.player_hp_max);
   if (!variable_global_exists("player_respawn_hp")) global.player_respawn_hp = 1;
   if (!variable_global_exists("player_hp")) global.player_hp = global.player_respawn_hp;
 

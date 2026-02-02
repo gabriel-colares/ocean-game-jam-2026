@@ -21,11 +21,29 @@ function en_set_state(_st) {
       en_group_release_slot(target_id, slot_id, id);
       slot_id = -1;
     }
+
+    if (!variable_instance_exists(self, "loot_dropped")) loot_dropped = false;
+    if (!loot_dropped) {
+      loot_dropped = true;
+      var lvl = 0;
+      if (variable_global_exists("difficulty_level")) lvl = global.difficulty_level;
+      var chance = min(0.12, 0.05 + (lvl * 0.002));
+      var obj_heart = asset_get_index("obj_heart_pickup");
+      if (obj_heart != -1 && random(1) < chance) {
+        instance_create_layer(x, y, layer, obj_heart);
+      }
+    }
   }
 }
 
 function en_fsm() {
-  if (dead) { en_set_state(EN_STATE.DEAD); return; }
+  if (dead) {
+    en_set_state(EN_STATE.DEAD);
+    state_t++;
+    var dead_tmax = max(1, ceil(room_speed * 1.2));
+    if (state_t >= dead_tmax) instance_destroy();
+    return;
+  }
 
   state_t++;
 

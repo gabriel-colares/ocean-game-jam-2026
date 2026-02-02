@@ -99,6 +99,9 @@ if (room == Menu) {
     var layer_mask = layer_get_id("Anahi_Mask");
     if (layer_mask != -1) layer_set_visible(layer_mask, false);
 
+    global.difficulty_level = 0;
+    global.difficulty_timer = 0;
+
     global.bgm_started = false;
     var snd_bgm = asset_get_index("trilha_sonora");
     if (snd_bgm != -1) audio_stop_sound(snd_bgm);
@@ -123,6 +126,17 @@ if (global.intro_pending) {
     intro_page = 0;
     intro_fade_alpha = 1;
     intro_fade_out = false;
+}
+
+audio_stop_sound(menu);
+
+if (!intro_active) {
+    var snd_bgm = asset_get_index("trilha_sonora");
+    if (snd_bgm != -1) {
+        if (!audio_is_playing(snd_bgm)) audio_play_sound(snd_bgm, 0, true);
+        if (!variable_global_exists("bgm_started")) global.bgm_started = false;
+        global.bgm_started = true;
+    }
 }
 
 follow_lerp_x = 0.16;

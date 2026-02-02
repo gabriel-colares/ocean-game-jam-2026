@@ -1,5 +1,26 @@
 draw_self();
 
+if (variable_instance_exists(self, "hpbar_show_t") && hpbar_show_t > 0 && variable_instance_exists(self, "hp") && variable_instance_exists(self, "hp_max") && hp_max > 0) {
+  var bar_w = 26;
+  var bar_h = 4;
+  var bar_x1 = x - bar_w * 0.5;
+  var bar_y1 = y + bbox_top - 10;
+  var pct = clamp(hp / hp_max, 0, 1);
+
+  draw_set_alpha(0.75);
+  draw_set_color(c_black);
+  draw_rectangle(bar_x1 - 1, bar_y1 - 1, bar_x1 + bar_w + 1, bar_y1 + bar_h + 1, false);
+
+  draw_set_alpha(0.95);
+  draw_set_color(make_color_rgb(70, 10, 10));
+  draw_rectangle(bar_x1, bar_y1, bar_x1 + bar_w, bar_y1 + bar_h, false);
+
+  draw_set_color(make_color_rgb(60, 220, 80));
+  draw_rectangle(bar_x1, bar_y1, bar_x1 + bar_w * pct, bar_y1 + bar_h, false);
+
+  draw_set_alpha(1);
+}
+
 var dbg = false;
 if (variable_global_exists("en_debug")) dbg = global.en_debug;
 if (!dbg) return;

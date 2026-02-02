@@ -222,6 +222,179 @@ if (death_panel_active) {
     exit;
 }
 
+if (!variable_global_exists("difficulty_level")) global.difficulty_level = 0;
+if (!variable_global_exists("difficulty_timer")) global.difficulty_timer = 0;
+
+var diff_can_tick =
+    !intro_active &&
+    !intro_fade_out &&
+    !saci_dialog_active &&
+    !dead_dialog_active &&
+    !upgrade_dialog_active;
+
+if (diff_can_tick) {
+    global.difficulty_timer++;
+    var steps_per_level = max(1, ceil(room_speed * 25));
+    while (global.difficulty_timer >= steps_per_level) {
+        global.difficulty_timer -= steps_per_level;
+        global.difficulty_level++;
+
+        if (instance_exists(target)) {
+            if (variable_instance_exists(target, "hp") && variable_instance_exists(target, "hp_max")) {
+                target.hp = min(target.hp + 1, target.hp_max);
+                global.player_hp = target.hp;
+            }
+        }
+
+        if ((global.difficulty_level mod 5) == 0) {
+            if (!variable_global_exists("player_hp_max")) global.player_hp_max = 3;
+            var new_hp_max = min(12, global.player_hp_max + 1);
+            global.player_hp_max = new_hp_max;
+
+            if (instance_exists(target)) {
+                if (variable_instance_exists(target, "hp_max")) target.hp_max = new_hp_max;
+                if (variable_instance_exists(target, "hp")) {
+                    target.hp = min(target.hp + 1, target.hp_max);
+                    global.player_hp = target.hp;
+                }
+            }
+
+            if (!variable_global_exists("player_respawn_hp")) global.player_respawn_hp = 1;
+            global.player_respawn_hp = max(global.player_respawn_hp, global.player_hp_max);
+        }
+    }
+}
+
+if (room == Aldeia_4 && diff_can_tick) {
+    if (!variable_instance_exists(self, "rogue4_inited")) {
+        rogue4_inited = true;
+        rogue4_wave = 0;
+        rogue4_state = 0;
+        rogue4_wait = max(1, ceil(room_speed * 0.75));
+
+        var n_e0 = instance_number(obj_enemy_base);
+        for (var i_e0 = 0; i_e0 < n_e0; i_e0++) {
+            var e0 = instance_find(obj_enemy_base, i_e0);
+            if (!instance_exists(e0)) continue;
+            with (e0) instance_destroy();
+        }
+
+        var n_h0 = instance_number(obj_heart_pickup);
+        for (var i_h0 = 0; i_h0 < n_h0; i_h0++) {
+            var h0 = instance_find(obj_heart_pickup, i_h0);
+            if (!instance_exists(h0)) continue;
+            with (h0) instance_destroy();
+        }
+
+        var n_p0 = instance_number(obj_spear_proj);
+        for (var i_p0 = 0; i_p0 < n_p0; i_p0++) {
+            var p0 = instance_find(obj_spear_proj, i_p0);
+            if (!instance_exists(p0)) continue;
+            with (p0) instance_destroy();
+        }
+
+        var n_pe0 = instance_number(obj_proj_enemy);
+        for (var i_pe0 = 0; i_pe0 < n_pe0; i_pe0++) {
+            var pe0 = instance_find(obj_proj_enemy, i_pe0);
+            if (!instance_exists(pe0)) continue;
+            with (pe0) instance_destroy();
+        }
+    }
+
+    if (!instance_exists(target)) target = instance_find(obj_player, 0);
+    if (!instance_exists(target)) { }
+    else {
+        if (rogue4_wait > 0) rogue4_wait--;
+
+        var alive = 0;
+        var n_e = instance_number(obj_enemy_base);
+        for (var i_e = 0; i_e < n_e; i_e++) {
+            var e = instance_find(obj_enemy_base, i_e);
+            if (!instance_exists(e)) continue;
+
+            var is_dead = false;
+            if (variable_instance_exists(e, "dead")) is_dead = e.dead;
+            else if (variable_instance_exists(e, "hp")) is_dead = (e.hp <= 0);
+
+            if (!is_dead) alive++;
+        }
+
+        if (rogue4_state == 0) {
+            if (rogue4_wait <= 0) rogue4_state = 1;
+        }
+
+        if (rogue4_state == 1) {
+            rogue4_wave++;
+
+            var lvl = 0;
+            if (variable_global_exists("difficulty_level")) lvl = global.difficulty_level;
+
+            var count = 2 + floor(rogue4_wave * 0.6) + floor(lvl * 0.15);
+            count = clamp(count, 2, 20);
+
+            var spawn_layer = layer_get_id("Instances");
+            if (spawn_layer == -1) spawn_layer = layer;
+
+            var candidates = [];
+            var o1 = asset_get_index("obj_enemy_slime");
+            var o2 = asset_get_index("obj_enemy_skeleton");
+            var o3 = asset_get_index("obj_enemy_monkey");
+            if (o1 != -1) candidates[array_length_1d(candidates)] = o1;
+            if (o2 != -1) candidates[array_length_1d(candidates)] = o2;
+            if (o3 != -1 && lvl >= 5) candidates[array_length_1d(candidates)] = o3;
+            if (array_length_1d(candidates) <= 0) candidates[0] = obj_enemy_base;
+
+            for (var i_s = 0; i_s < count; i_s++) {
+                var obj_pick = candidates[irandom(array_length_1d(candidates) - 1)];
+
+                var sx = 0;
+                var sy = 0;
+                var ok = false;
+                for (var tries = 0; tries < 40; tries++) {
+                    sx = random_range(32, room_width - 32);
+                    sy = random_range(32, room_height - 32);
+                    if (point_distance(sx, sy, target.x, target.y) < 120) continue;
+                    if (collision_circle(sx, sy, 8, obj_solid, false, true)) continue;
+                    ok = true;
+                    break;
+                }
+                if (!ok) {
+                    sx = clamp(target.x + choose(-1, 1) * 140, 32, room_width - 32);
+                    sy = clamp(target.y + choose(-1, 1) * 140, 32, room_height - 32);
+                }
+
+                instance_create_layer(sx, sy, spawn_layer, obj_pick);
+            }
+
+            alive = count;
+            rogue4_state = 2;
+        }
+
+        if (rogue4_state == 2) {
+            if (alive <= 0) {
+                rogue4_state = 3;
+                rogue4_wait = max(1, ceil(room_speed * 1.0));
+
+                if (variable_instance_exists(target, "hp") && variable_instance_exists(target, "hp_max")) {
+                    target.hp = min(target.hp + 1, target.hp_max);
+                    global.player_hp = target.hp;
+                }
+
+                if ((rogue4_wave mod 3) == 0) {
+                    var obj_heart = asset_get_index("obj_heart_pickup");
+                    if (obj_heart != -1) {
+                        var spawn_layer2 = layer_get_id("Instances");
+                        if (spawn_layer2 == -1) spawn_layer2 = layer;
+                        instance_create_layer(target.x + random_range(-16, 16), target.y + random_range(-16, 16), spawn_layer2, obj_heart);
+                    }
+                }
+            }
+        } else if (rogue4_state == 3) {
+            if (rogue4_wait <= 0) rogue4_state = 1;
+        }
+    }
+}
+
 if (intro_active) {
     target.pl_dialog_lock = true;
     dead_prompt_obj = noone;

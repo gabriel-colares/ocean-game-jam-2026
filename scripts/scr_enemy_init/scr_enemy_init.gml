@@ -1,6 +1,24 @@
 function en_init() {
   if (!variable_instance_exists(self, "enemy_kind")) enemy_kind = "skeleton";
-  cfg = en_cfg_get(enemy_kind);
+  var base_cfg = en_cfg_get(enemy_kind);
+  cfg = {};
+  var cfg_keys = variable_struct_get_names(base_cfg);
+  for (var i_k = 0; i_k < array_length(cfg_keys); i_k++) {
+    var k = cfg_keys[i_k];
+    cfg[$ k] = base_cfg[$ k];
+  }
+
+  var lvl = 0;
+  if (variable_global_exists("difficulty_level")) lvl = global.difficulty_level;
+  if (lvl > 0) {
+    var hp_mult = 1 + (lvl * 0.16);
+    var spd_mult = 1 + (lvl * 0.06);
+    var dmg_mult = 1 + (lvl * 0.10);
+
+    cfg.hp_max = max(1, round(cfg.hp_max * hp_mult));
+    cfg.move_speed *= spd_mult;
+    cfg.attack_dmg = max(1, ceil(cfg.attack_dmg * dmg_mult));
+  }
 
   state = EN_STATE.IDLE;
   state_t = 0;
@@ -44,6 +62,9 @@ function en_init() {
 
   hp_max = cfg.hp_max;
   hp = hp_max;
+  hpbar_show_tmax = max(1, ceil(room_speed * 1.25));
+  hpbar_show_t = 0;
+  loot_dropped = false;
   hitstun_t = 0;
   dead = false;
   slow_t = 0;
@@ -62,6 +83,7 @@ function en_init() {
     if (_amount <= 0) return false;
     if (dead) return false;
     hp = max(0, hp - _amount);
+    hpbar_show_t = hpbar_show_tmax;
     cfg.on_hit(self, _amount);
     if (hp <= 0) {
       en_set_state(EN_STATE.DEAD);
