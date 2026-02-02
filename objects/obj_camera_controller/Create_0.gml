@@ -47,6 +47,31 @@ dead_prompt_text = "Interagir Enter";
 dead_dialog_active = false;
 dead_dialog_text = "";
 
+if (!variable_global_exists("saci_stage")) global.saci_stage = 0;
+
+saci_dialog_active = false;
+saci_dialog_owner = noone;
+saci_dialog_lines = [];
+saci_dialog_lines2 = [
+  "Anahi:\nQuem e voce? O que aconteceu com esse lugar?",
+  "Saci:\nA vila adoeceu antes dos corpos carem. A escuridao chegou primeiro... depois, o resto seguiu.",
+  "Anahi:\nIsso foi uma doenca?",
+  "Saci:\nDoenca, maldicao, castigo... nomes diferentes pra mesma dor.",
+  "(O Saci se aproxima e tira algo de dentro de seu gorro.)",
+  "Saci:\nEssa mascara... ela chama quem escuta demais o escuro.",
+  "Anahi:\nPor que me dar isso?",
+  "Saci:\nPorque ela ja te escolheu. E porque sem ela... voce nao volta viva.",
+  "Anahi:\nDe onde ela veio?",
+  "Saci:\nAlgumas historias nao gostam de ser contadas. Outras mordem quem tenta.",
+  "(Ele entrega a mascara.)",
+  "Saci:\nUse quando a noite apertar. Mas lembre-se: toda ajuda cobra algo em troca.",
+  "Anahi:\nE como eu paro isso?",
+  "Saci:\nHehehe... se eu soubesse tudo, nao estaria aqui so observando.",
+  "(O Saci desaparece em uma nuvem de fumaca.)"
+];
+saci_dialog_index = 0;
+saci_dialog_text = "";
+
 if (room == Menu) {
     var layer_anahi = layer_get_id("Anahi");
     if (layer_anahi != -1) layer_set_visible(layer_anahi, true);

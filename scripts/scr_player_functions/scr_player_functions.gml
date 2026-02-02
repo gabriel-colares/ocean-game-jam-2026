@@ -115,6 +115,20 @@ function pl_init_functions() {
       y_resto = 0;
       invuln_steps = 0;
       hitstun_steps = 0;
+      if (pl_has_mask) {
+        if (variable_instance_exists(self, "sprDeadMask") && sprDeadMask != -1) {
+          sprite_index = sprDeadMask;
+          image_index = 0;
+          image_speed = 0;
+          anim_timer = 0;
+        }
+      } else {
+        var spr_idle_dead = pl_sprite_idle(facing);
+        sprite_index = spr_idle_dead;
+        image_index = 0;
+        image_speed = 0;
+        anim_timer = 0;
+      }
       return true;
     }
 

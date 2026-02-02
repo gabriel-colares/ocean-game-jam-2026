@@ -1,19 +1,62 @@
 /// scr_player_init_animation.gml
 function pl_init_animation() {
   #region ANIMAÇÃO
-  pl_has_mask = false;
+  sprIdleDownNoMask = sprPlayerIdleDown;
+  sprIdleUpNoMask   = sprPlayerIdleUp;
+  sprIdleSideNoMask = sprPlayerIdleLeft;
 
-  sprIdleDown = sprPlayerIdleDown;
-  sprIdleUp   = sprPlayerIdleUp;
-  sprIdleSide = sprPlayerIdleLeft;
+  sprRunDownNoMask  = sprPlayerRunDown;
+  sprRunUpNoMask    = sprPlayerRunUp;
+  sprRunSideNoMask  = sprPlayerRunLeft;
 
-  sprRunDown  = sprPlayerRunDown;
-  sprRunUp    = sprPlayerRunUp;
-  sprRunSide  = sprPlayerRunLeft;
+  sprIdleDownMask = sprPlayerMaskIdleDown;
+  sprIdleUpMask   = sprPlayerMaskIdleUp;
+  sprIdleSideMask = sprPlayerMaskIdleLeft;
 
-  sprAtkDown  = sprPlayerMaskAttackDown;
-  sprAtkUp    = sprPlayerMaskAttackUp;
-  sprAtkSide  = sprPlayerMaskAttackLeft;
+  sprRunDownMask  = sprPlayerMaskRunDown;
+  sprRunUpMask    = sprPlayerMaskRunUp;
+  sprRunSideMask  = sprPlayerMaskRunLeft;
+
+  sprAtkDownMask  = sprPlayerMaskAttackDown;
+  sprAtkUpMask    = sprPlayerMaskAttackUp;
+  sprAtkSideMask  = sprPlayerMaskAttackLeft;
+
+  sprDeadNoMask = asset_get_index("sprPlayerDead");
+  sprDeadMask   = asset_get_index("sprPlayerMaskDead");
+
+  self.pl_set_mask = function(_has_mask) {
+    pl_has_mask = _has_mask;
+
+    if (pl_has_mask) {
+      sprIdleDown = sprIdleDownMask;
+      sprIdleUp   = sprIdleUpMask;
+      sprIdleSide = sprIdleSideMask;
+
+      sprRunDown  = sprRunDownMask;
+      sprRunUp    = sprRunUpMask;
+      sprRunSide  = sprRunSideMask;
+
+      sprAtkDown  = sprAtkDownMask;
+      sprAtkUp    = sprAtkUpMask;
+      sprAtkSide  = sprAtkSideMask;
+    } else {
+      sprIdleDown = sprIdleDownNoMask;
+      sprIdleUp   = sprIdleUpNoMask;
+      sprIdleSide = sprIdleSideNoMask;
+
+      sprRunDown  = sprRunDownNoMask;
+      sprRunUp    = sprRunUpNoMask;
+      sprRunSide  = sprRunSideNoMask;
+
+      sprAtkDown  = sprAtkDownMask;
+      sprAtkUp    = sprAtkUpMask;
+      sprAtkSide  = sprAtkSideMask;
+    }
+
+    mask_index = sprRunDown;
+  };
+
+  self.pl_set_mask(false);
 
   is_attacking = false;
   attack_timer = 0;
@@ -27,8 +70,6 @@ function pl_init_animation() {
   image_index  = 0;
   image_speed  = 0;
   image_xscale = 1;
-
-  mask_index = sprPlayerRunDown;
 
   attack_hold_steps = 10;
   shoot_hold_steps  = 8;

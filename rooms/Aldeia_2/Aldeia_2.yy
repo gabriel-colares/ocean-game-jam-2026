@@ -12,6 +12,7 @@
     {"name":"inst_3976BC50","path":"rooms/Aldeia_2/Aldeia_2.yy",},
     {"name":"inst_4AB745B","path":"rooms/Aldeia_2/Aldeia_2.yy",},
     {"name":"inst_1EB325CB","path":"rooms/Aldeia_2/Aldeia_2.yy",},
+    {"name":"inst_5A7C0E1F","path":"rooms/Aldeia_2/Aldeia_2.yy",},
   ],
   "isDnd":false,
   "layers":[
@@ -22,6 +23,7 @@
         {"$GMRInstance":"v4","%Name":"inst_3976BC50","colour":4294967295,"frozen":false,"hasCreationCode":false,"ignore":false,"imageIndex":0,"imageSpeed":1.0,"inheritCode":false,"inheritedItemId":null,"inheritItemSettings":false,"isDnd":false,"name":"inst_3976BC50","objectId":{"name":"obj_npc_dead_3","path":"objects/obj_npc_dead_3/obj_npc_dead_3.yy",},"properties":[],"resourceType":"GMRInstance","resourceVersion":"2.0","rotation":0.0,"scaleX":1.0,"scaleY":1.0,"x":353.0,"y":240.0,},
         {"$GMRInstance":"v4","%Name":"inst_4AB745B","colour":4294967295,"frozen":false,"hasCreationCode":false,"ignore":false,"imageIndex":0,"imageSpeed":1.0,"inheritCode":false,"inheritedItemId":null,"inheritItemSettings":false,"isDnd":false,"name":"inst_4AB745B","objectId":{"name":"obj_npc_dead_2","path":"objects/obj_npc_dead_2/obj_npc_dead_2.yy",},"properties":[],"resourceType":"GMRInstance","resourceVersion":"2.0","rotation":0.0,"scaleX":1.0,"scaleY":1.0,"x":420.0,"y":294.0,},
         {"$GMRInstance":"v4","%Name":"inst_1EB325CB","colour":4294967295,"frozen":false,"hasCreationCode":false,"ignore":false,"imageIndex":0,"imageSpeed":1.0,"inheritCode":false,"inheritedItemId":null,"inheritItemSettings":false,"isDnd":false,"name":"inst_1EB325CB","objectId":{"name":"obj_npc_dead_2","path":"objects/obj_npc_dead_2/obj_npc_dead_2.yy",},"properties":[],"resourceType":"GMRInstance","resourceVersion":"2.0","rotation":0.0,"scaleX":1.0,"scaleY":1.0,"x":301.0,"y":331.0,},
+        {"$GMRInstance":"v4","%Name":"inst_5A7C0E1F","colour":4294967295,"frozen":false,"hasCreationCode":false,"ignore":false,"imageIndex":0,"imageSpeed":1.0,"inheritCode":false,"inheritedItemId":null,"inheritItemSettings":false,"isDnd":false,"name":"inst_5A7C0E1F","objectId":{"name":"obj_saci","path":"objects/obj_saci/obj_saci.yy",},"properties":[],"resourceType":"GMRInstance","resourceVersion":"2.0","rotation":0.0,"scaleX":1.0,"scaleY":1.0,"x":256.0,"y":304.0,},
       ],"layers":[],"name":"Instances","properties":[],"resourceType":"GMRInstanceLayer","resourceVersion":"2.0","userdefinedDepth":false,"visible":true,},
     {"$GMRTileLayer":"","%Name":"Houses","depth":100,"effectEnabled":true,"effectType":null,"gridX":32,"gridY":32,"hierarchyFrozen":false,"inheritLayerDepth":false,"inheritLayerSettings":false,"inheritSubLayers":true,"inheritVisibility":true,"layers":[],"name":"Houses","properties":[],"resourceType":"GMRTileLayer","resourceVersion":"2.0","tiles":{"SerialiseHeight":31,"SerialiseWidth":31,"TileCompressedData":[
           -234,-2147483648,-5,0,-26,-2147483648,-5,0,-28,-2147483648,5,0,-2147483648,0,-2147483648,0,-21,-2147483648,

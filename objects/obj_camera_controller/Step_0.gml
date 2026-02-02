@@ -131,7 +131,27 @@ if (intro_active) {
         target.pl_dialog_lock = false;
     }
 } else {
-    if (dead_dialog_active) {
+    if (saci_dialog_active) {
+        dead_prompt_obj = noone;
+        target.pl_dialog_lock = true;
+        if (keyboard_check_pressed(vk_enter)) {
+            saci_dialog_index++;
+            if (saci_dialog_index >= array_length_1d(saci_dialog_lines)) {
+                saci_dialog_active = false;
+                saci_dialog_text = "";
+                if (instance_exists(target)) target.pl_dialog_lock = false;
+                var next_stage = 1;
+                if (instance_exists(saci_dialog_owner)) {
+                    if (variable_instance_exists(saci_dialog_owner, "encounter_id") && saci_dialog_owner.encounter_id == 2) next_stage = 2;
+                    saci_dialog_owner.saci_do_fade = true;
+                }
+                saci_dialog_owner = noone;
+                if (global.saci_stage < next_stage) global.saci_stage = next_stage;
+            } else {
+                saci_dialog_text = saci_dialog_lines[saci_dialog_index];
+            }
+        }
+    } else if (dead_dialog_active) {
         dead_prompt_obj = noone;
         if (keyboard_check_pressed(vk_enter)) {
             dead_dialog_active = false;

@@ -90,6 +90,32 @@ if (intro_active || intro_fade_out) {
     exit;
 }
 
+if (saci_dialog_active) {
+    var m_s = 20;
+    var box_h_s = 132;
+    var sx1 = m_s;
+    var sy1 = gui_h - m_s - box_h_s;
+    var sx2 = gui_w - m_s;
+    var sy2 = gui_h - m_s;
+
+    draw_set_alpha(1);
+    draw_set_color(c_black);
+    draw_rectangle(sx1, sy1, sx2, sy2, false);
+    draw_set_color(c_white);
+    draw_rectangle(sx1, sy1, sx2, sy2, true);
+
+    draw_set_halign(fa_left);
+    draw_set_valign(fa_top);
+    var pad_l_s = 16;
+    var pad_r_s = 16;
+    var pad_t_s = 14;
+    var wrap_w_s = max(1, (sx2 - sx1) - (pad_l_s + pad_r_s));
+    draw_text_ext(sx1 + pad_l_s, sy1 + pad_t_s, saci_dialog_text, 18, wrap_w_s);
+
+    draw_set_font(-1);
+    exit;
+}
+
 if (dead_dialog_active) {
     var m = 20;
     var box_h = 132;
