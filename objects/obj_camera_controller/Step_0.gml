@@ -9,7 +9,7 @@ if (room == Menu) {
     var h = menu_button_h;
 
     if (menu_gp == -1 || !gamepad_is_connected(menu_gp)) {
-        menu_gp = pl_gamepad_find_first(3);
+        menu_gp = pl_gamepad_find_first(11);
     }
 
     if (menu_start_phase == 1) {
@@ -55,11 +55,19 @@ if (room == Menu) {
 
     if (menu_hover != -1) menu_selected = menu_hover;
 
+    if (menu_nav_cd > 0) menu_nav_cd--;
+
     var nav_up = keyboard_check_pressed(vk_up) || keyboard_check_pressed(ord("W"));
     var nav_down = keyboard_check_pressed(vk_down) || keyboard_check_pressed(ord("S"));
     if (menu_gp != -1) {
         nav_up = nav_up || gamepad_button_check_pressed(menu_gp, gp_padu);
         nav_down = nav_down || gamepad_button_check_pressed(menu_gp, gp_padd);
+
+        if (menu_nav_cd <= 0) {
+            var ly = gamepad_axis_value(menu_gp, gp_axislv);
+            if (ly <= -0.55) { nav_up = true; menu_nav_cd = max(1, ceil(room_speed * 0.18)); }
+            if (ly >= 0.55) { nav_down = true; menu_nav_cd = max(1, ceil(room_speed * 0.18)); }
+        }
     }
 
     if (nav_up) menu_selected = (menu_selected + 2) mod 3;
@@ -106,9 +114,18 @@ if (!instance_exists(target)) {
 var intro_accept = keyboard_check_pressed(vk_enter) || keyboard_check_pressed(vk_space);
 var intro_gp = -1;
 if (variable_instance_exists(target, "pad_id")) intro_gp = target.pad_id;
-if (intro_gp == -1 || !gamepad_is_connected(intro_gp)) intro_gp = pl_gamepad_find_first(3);
+if (intro_gp == -1 || !gamepad_is_connected(intro_gp)) intro_gp = pl_gamepad_find_first(11);
 if (!intro_accept && intro_gp != -1) {
     intro_accept = gamepad_button_check_pressed(intro_gp, gp_start) || gamepad_button_check_pressed(intro_gp, gp_face1);
+}
+
+var dialog_accept = keyboard_check_pressed(vk_enter) || keyboard_check_pressed(vk_space);
+if (!dialog_accept && intro_gp != -1) {
+    dialog_accept =
+        gamepad_button_check_pressed(intro_gp, gp_start) ||
+        gamepad_button_check_pressed(intro_gp, gp_face1) ||
+        gamepad_button_check_pressed(intro_gp, gp_face2) ||
+        gamepad_button_check_pressed(intro_gp, gp_face3);
 }
 
 if (intro_active) {
@@ -134,16 +151,50 @@ if (intro_active) {
     if (saci_dialog_active) {
         dead_prompt_obj = noone;
         target.pl_dialog_lock = true;
-        if (keyboard_check_pressed(vk_enter)) {
+        if (dialog_accept) {
             saci_dialog_index++;
             if (saci_dialog_index >= array_length_1d(saci_dialog_lines)) {
                 saci_dialog_active = false;
                 saci_dialog_text = "";
                 if (instance_exists(target)) target.pl_dialog_lock = false;
                 var next_stage = 1;
-                if (instance_exists(saci_dialog_owner)) {
-                    if (variable_instance_exists(saci_dialog_owner, "encounter_id") && saci_dialog_owner.encounter_id == 2) next_stage = 2;
-                    saci_dialog_owner.saci_do_fade = true;
+                var owner = saci_dialog_owner;
+                if (instance_exists(owner)) {
+                    if (variable_instance_exists(owner, "encounter_id") && owner.encounter_id == 2) next_stage = 2;
+                    owner.saci_do_fade = true;
+                }
+                if (next_stage == 2) {
+                    upgrade_fx_t = upgrade_fx_steps;
+                    upgrade_wait_t = upgrade_wait_steps;
+                    upgrade_dialog_text = "Habilidades adquiridas\n\nJogar lanca: botao O\nAtaque curto: botao Quadrado";
+
+                    if (instance_exists(target)) {
+                        if (variable_instance_exists(target, "pl_set_mask")) target.pl_set_mask(true);
+                        if (variable_instance_exists(target, "hp_max")) target.hp = min(3, target.hp_max);
+                        if (variable_instance_exists(target, "pl_dead")) target.pl_dead = false;
+                        if (variable_instance_exists(target, "invuln_steps")) target.invuln_steps = 0;
+                        if (variable_instance_exists(target, "hitstun_steps")) target.hitstun_steps = 0;
+                        if (variable_instance_exists(target, "is_attacking")) target.is_attacking = false;
+                        if (variable_instance_exists(target, "is_shooting")) target.is_shooting = false;
+                    }
+                    global.player_respawn_hp = 3;
+                    if (instance_exists(target) && variable_instance_exists(target, "hp")) global.player_hp = target.hp;
+
+                    if (instance_exists(owner)) {
+                        for (var i_sm = 0; i_sm < 18; i_sm++) {
+                            effect_create_above(ef_smoke, owner.x + random_range(-6, 6), owner.y + random_range(-6, 6), 1, c_gray);
+                        }
+                    }
+
+                    if (instance_exists(target)) {
+                        for (var i_sm2 = 0; i_sm2 < 18; i_sm2++) {
+                            effect_create_above(ef_smoke, target.x + random_range(-6, 6), target.y + random_range(-6, 6), 1, c_gray);
+                        }
+                        effect_create_above(ef_ring, target.x, target.y, 1, c_aqua);
+                        for (var i_sp = 0; i_sp < 12; i_sp++) {
+                            effect_create_above(ef_spark, target.x + random_range(-8, 8), target.y + random_range(-10, 10), 1, c_white);
+                        }
+                    }
                 }
                 saci_dialog_owner = noone;
                 if (global.saci_stage < next_stage) global.saci_stage = next_stage;
@@ -151,9 +202,17 @@ if (intro_active) {
                 saci_dialog_text = saci_dialog_lines[saci_dialog_index];
             }
         }
+    } else if (upgrade_dialog_active) {
+        dead_prompt_obj = noone;
+        target.pl_dialog_lock = true;
+        if (dialog_accept) {
+            upgrade_dialog_active = false;
+            upgrade_dialog_text = "";
+            if (instance_exists(target)) target.pl_dialog_lock = false;
+        }
     } else if (dead_dialog_active) {
         dead_prompt_obj = noone;
-        if (keyboard_check_pressed(vk_enter)) {
+        if (dialog_accept) {
             dead_dialog_active = false;
             if (instance_exists(target)) target.pl_dialog_lock = false;
         }
@@ -199,7 +258,9 @@ if (intro_active) {
             }
         }
 
-        if (instance_exists(dead_prompt_obj) && keyboard_check_pressed(vk_enter)) {
+        var dead_accept = keyboard_check_pressed(vk_enter);
+        if (!dead_accept && intro_gp != -1) dead_accept = gamepad_button_check_pressed(intro_gp, gp_face1);
+        if (instance_exists(dead_prompt_obj) && dead_accept) {
             dead_dialog_active = true;
             target.pl_dialog_lock = true;
 
@@ -212,6 +273,21 @@ if (intro_active) {
             }
         }
     }
+}
+
+if (upgrade_fx_t > 0) upgrade_fx_t--;
+
+if (!saci_dialog_active && !dead_dialog_active && !intro_active && !intro_fade_out && !upgrade_dialog_active) {
+    if (upgrade_fx_t <= 0 && upgrade_wait_t > 0) upgrade_wait_t--;
+    if (upgrade_fx_t <= 0 && upgrade_wait_t <= 0 && upgrade_dialog_text != "") {
+        upgrade_dialog_active = true;
+        if (instance_exists(target)) target.pl_dialog_lock = true;
+    }
+}
+
+if (upgrade_fx_t > 0 || upgrade_wait_t > 0 || upgrade_dialog_active) {
+    dead_prompt_obj = noone;
+    if (instance_exists(target)) target.pl_dialog_lock = true;
 }
 
 var b = instance_find(obj_camera_bounds, 0);

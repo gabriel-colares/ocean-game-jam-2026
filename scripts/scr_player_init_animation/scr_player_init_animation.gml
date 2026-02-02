@@ -26,6 +26,7 @@ function pl_init_animation() {
 
   self.pl_set_mask = function(_has_mask) {
     pl_has_mask = _has_mask;
+    global.player_has_mask = pl_has_mask;
 
     if (pl_has_mask) {
       sprIdleDown = sprIdleDownMask;
@@ -56,7 +57,9 @@ function pl_init_animation() {
     mask_index = sprRunDown;
   };
 
-  self.pl_set_mask(false);
+  var start_mask = false;
+  if (variable_global_exists("player_has_mask")) start_mask = global.player_has_mask;
+  self.pl_set_mask(start_mask);
 
   is_attacking = false;
   attack_timer = 0;

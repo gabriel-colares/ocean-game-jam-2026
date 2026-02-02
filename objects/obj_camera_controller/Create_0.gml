@@ -39,10 +39,11 @@ menu_wait_steps = max(1, ceil(room_speed * 1.0));
 menu_fade_timer = 0;
 menu_fade_steps = max(1, ceil(room_speed * 0.2));
 menu_fade_alpha = 0;
+menu_nav_cd = 0;
 
 dead_interact_r = 28;
 dead_prompt_obj = noone;
-dead_prompt_text = "Interagir Enter";
+dead_prompt_text = "Aperte X para interagir";
 
 dead_dialog_active = false;
 dead_dialog_text = "";
@@ -72,6 +73,15 @@ saci_dialog_lines2 = [
 saci_dialog_index = 0;
 saci_dialog_text = "";
 
+upgrade_fx_steps = max(1, ceil(room_speed * 1.6));
+upgrade_fx_t = 0;
+
+upgrade_wait_steps = max(1, ceil(room_speed * 0.5));
+upgrade_wait_t = 0;
+
+upgrade_dialog_active = false;
+upgrade_dialog_text = "";
+
 if (room == Menu) {
     var layer_anahi = layer_get_id("Anahi");
     if (layer_anahi != -1) layer_set_visible(layer_anahi, true);
@@ -86,7 +96,7 @@ if (room == Menu) {
     menu_fade_timer = 0;
     menu_fade_alpha = 0;
 
-    menu_gp = pl_gamepad_find_first(3);
+    menu_gp = pl_gamepad_find_first(11);
     view_enabled = false;
     view_visible[0] = false;
     exit;

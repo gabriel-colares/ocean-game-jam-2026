@@ -13,3 +13,15 @@ pl_atk_press = false;
 pl_shoot_press = false;
 
 pl_create();
+
+if (!variable_global_exists("respawn_room")) {
+  global.respawn_room = room;
+  global.respawn_x = x;
+  global.respawn_y = y;
+  global.respawn_apply = false;
+  global.respawn_restarting = false;
+}
+
+if (!instance_exists(obj_respawn)) {
+  instance_create_layer(x, y, layer, obj_respawn);
+}

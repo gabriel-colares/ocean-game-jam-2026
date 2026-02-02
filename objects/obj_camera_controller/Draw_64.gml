@@ -142,6 +142,32 @@ if (dead_dialog_active) {
     exit;
 }
 
+if (upgrade_dialog_active) {
+    var m_u = 20;
+    var box_h_u = 170;
+    var ux1 = m_u;
+    var uy1 = gui_h - m_u - box_h_u;
+    var ux2 = gui_w - m_u;
+    var uy2 = gui_h - m_u;
+
+    draw_set_alpha(1);
+    draw_set_color(c_black);
+    draw_rectangle(ux1, uy1, ux2, uy2, false);
+    draw_set_color(c_white);
+    draw_rectangle(ux1, uy1, ux2, uy2, true);
+
+    draw_set_halign(fa_left);
+    draw_set_valign(fa_top);
+    var pad_l_u = 16;
+    var pad_r_u = 16;
+    var pad_t_u = 14;
+    var wrap_w_u = max(1, (ux2 - ux1) - (pad_l_u + pad_r_u));
+    draw_text_ext(ux1 + pad_l_u, uy1 + pad_t_u, upgrade_dialog_text, 18, wrap_w_u);
+
+    draw_set_font(-1);
+    exit;
+}
+
 if (instance_exists(dead_prompt_obj)) {
     var vx = camera_get_view_x(cam);
     var vy = camera_get_view_y(cam);
@@ -160,6 +186,14 @@ if (instance_exists(dead_prompt_obj)) {
     draw_text(sx + 1, sy + 1, dead_prompt_text);
     draw_set_color(c_white);
     draw_text(sx, sy, dead_prompt_text);
+}
+
+if (upgrade_fx_t > 0) {
+    var a = sqrt(upgrade_fx_t / max(1, upgrade_fx_steps));
+    draw_set_alpha(0.55 * a);
+    draw_set_color(c_white);
+    draw_rectangle(0, 0, gui_w, gui_h, false);
+    draw_set_alpha(1);
 }
 
 draw_set_font(-1);

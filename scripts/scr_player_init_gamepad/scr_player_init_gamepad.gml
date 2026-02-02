@@ -6,7 +6,7 @@ function pl_init_gamepad_config() {
   pad_use_dpad  = true;
   pad_use_stick = true;
 
-  pad_btn_attack = gp_face1;
+  pad_btn_attack = gp_face3;
   pad_btn_shoot  = gp_face2;
 
   // runtime

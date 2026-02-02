@@ -67,7 +67,11 @@ function pl_init_functions() {
 
   #region VIDA
   hp_max = 3;
-  hp = 1;
+  if (!variable_global_exists("player_respawn_hp")) global.player_respawn_hp = 1;
+  if (!variable_global_exists("player_hp")) global.player_hp = global.player_respawn_hp;
+
+  hp = clamp(global.player_hp, 0, hp_max);
+  global.player_hp = hp;
   pl_dead = false;
 
   invuln_steps_max = max(1, ceil(room_speed * 0.2));
@@ -101,6 +105,7 @@ function pl_init_functions() {
     if (invuln_steps > 0) return false;
 
     hp = max(0, hp - _amount);
+    global.player_hp = hp;
     invuln_steps = invuln_steps_max;
     hitstun_steps = max(hitstun_steps, _stun_steps);
 
@@ -109,6 +114,7 @@ function pl_init_functions() {
 
     if (hp <= 0) {
       pl_dead = true;
+      global.player_hp = 0;
       hsp = 0;
       vsp = 0;
       x_resto = 0;
