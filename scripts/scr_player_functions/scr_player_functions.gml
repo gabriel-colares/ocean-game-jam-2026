@@ -66,8 +66,8 @@ function pl_init_functions() {
   #endregion
 
   #region VIDA
-  hp_max = 5;
-  hp = hp_max;
+  hp_max = 3;
+  hp = 1;
   pl_dead = false;
 
   invuln_steps_max = max(1, ceil(room_speed * 0.2));
@@ -137,27 +137,21 @@ function pl_init_functions() {
   #region HUD
   self.pl_draw_gui = function() {
     var margin = 12;
-    var bar_w = 140;
-    var bar_h = 14;
+    var gap = 4;
+    var sc = 2;
 
-    var ratio = 0;
-    if (hp_max > 0) ratio = clamp(hp / hp_max, 0, 1);
+    var spr_full = spr_heart_full;
+    var spr_empty = spr_heart_empty;
 
+    var sw = sprite_get_width(spr_full);
     var x0 = margin;
     var y0 = margin;
 
     draw_set_alpha(1);
-    draw_set_color(c_black);
-    draw_rectangle(x0 - 2, y0 - 2, x0 + bar_w + 2, y0 + bar_h + 2, false);
-
-    draw_set_color(c_red);
-    draw_rectangle(x0, y0, x0 + (bar_w * ratio), y0 + bar_h, false);
-
-    draw_set_color(c_white);
-    draw_text(x0, y0 + bar_h + 4, string(hp) + "/" + string(hp_max));
-
-    draw_set_alpha(1);
-    draw_set_color(c_white);
+    for (var i = 0; i < hp_max; i++) {
+      var spr = (i < hp) ? spr_full : spr_empty;
+      draw_sprite_ext(spr, 0, x0 + i * ((sw * sc) + gap), y0, sc, sc, 0, c_white, 1);
+    }
   };
   #endregion
 

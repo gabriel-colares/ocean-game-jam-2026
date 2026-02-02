@@ -27,6 +27,7 @@ if (room == Menu) {
         menu_fade_alpha = clamp(menu_fade_timer / menu_fade_steps, 0, 1);
         if (menu_fade_alpha >= 1) {
             audio_stop_sound(menu);
+            global.intro_pending = true;
             room_goto(Aldeia_1);
         }
         exit;
@@ -102,50 +103,79 @@ if (!instance_exists(target)) {
     base_y = target.y;
 }
 
-if (dead_dialog_active) {
+var intro_accept = keyboard_check_pressed(vk_enter) || keyboard_check_pressed(vk_space);
+var intro_gp = -1;
+if (variable_instance_exists(target, "pad_id")) intro_gp = target.pad_id;
+if (intro_gp == -1 || !gamepad_is_connected(intro_gp)) intro_gp = pl_gamepad_find_first(3);
+if (!intro_accept && intro_gp != -1) {
+    intro_accept = gamepad_button_check_pressed(intro_gp, gp_start) || gamepad_button_check_pressed(intro_gp, gp_face1);
+}
+
+if (intro_active) {
+    target.pl_dialog_lock = true;
     dead_prompt_obj = noone;
-    if (keyboard_check_pressed(vk_enter)) {
-        dead_dialog_active = false;
-        if (instance_exists(target)) target.pl_dialog_lock = false;
+    if (intro_accept) {
+        intro_page++;
+        if (intro_page >= array_length_1d(intro_pages)) {
+            intro_active = false;
+            intro_fade_out = true;
+        }
+    }
+} else if (intro_fade_out) {
+    target.pl_dialog_lock = true;
+    dead_prompt_obj = noone;
+    intro_fade_alpha = clamp(intro_fade_alpha - (1 / intro_fade_steps), 0, 1);
+    if (intro_fade_alpha <= 0) {
+        intro_fade_alpha = 0;
+        intro_fade_out = false;
+        target.pl_dialog_lock = false;
     }
 } else {
-    dead_prompt_obj = noone;
-    var best_d2 = dead_interact_r * dead_interact_r;
-    var px = target.x;
-    var py = target.y;
-
-    var n1 = instance_number(obj_npc_dead_1);
-    for (var i1 = 0; i1 < n1; i1++) {
-        var d1 = instance_find(obj_npc_dead_1, i1);
-        var dx1 = d1.x - px;
-        var dy1 = d1.y - py;
-        var dd1 = dx1 * dx1 + dy1 * dy1;
-        if (dd1 <= best_d2) {
-            best_d2 = dd1;
-            dead_prompt_obj = d1;
+    if (dead_dialog_active) {
+        dead_prompt_obj = noone;
+        if (keyboard_check_pressed(vk_enter)) {
+            dead_dialog_active = false;
+            if (instance_exists(target)) target.pl_dialog_lock = false;
         }
-    }
+    } else {
+        dead_prompt_obj = noone;
+        var best_d2 = dead_interact_r * dead_interact_r;
+        var px = target.x;
+        var py = target.y;
 
-    var n2 = instance_number(obj_npc_dead_2);
-    for (var i2 = 0; i2 < n2; i2++) {
-        var d2 = instance_find(obj_npc_dead_2, i2);
-        var dx2 = d2.x - px;
-        var dy2 = d2.y - py;
-        var dd2 = dx2 * dx2 + dy2 * dy2;
-        if (dd2 <= best_d2) {
-            best_d2 = dd2;
-            dead_prompt_obj = d2;
+        var n1 = instance_number(obj_npc_dead_1);
+        for (var i1 = 0; i1 < n1; i1++) {
+            var d1 = instance_find(obj_npc_dead_1, i1);
+            var dx1 = d1.x - px;
+            var dy1 = d1.y - py;
+            var dd1 = dx1 * dx1 + dy1 * dy1;
+            if (dd1 <= best_d2) {
+                best_d2 = dd1;
+                dead_prompt_obj = d1;
+            }
         }
-    }
 
-    if (instance_exists(dead_prompt_obj) && keyboard_check_pressed(vk_enter)) {
-        dead_dialog_active = true;
-        target.pl_dialog_lock = true;
+        var n2 = instance_number(obj_npc_dead_2);
+        for (var i2 = 0; i2 < n2; i2++) {
+            var d2 = instance_find(obj_npc_dead_2, i2);
+            var dx2 = d2.x - px;
+            var dy2 = d2.y - py;
+            var dd2 = dx2 * dx2 + dy2 * dy2;
+            if (dd2 <= best_d2) {
+                best_d2 = dd2;
+                dead_prompt_obj = d2;
+            }
+        }
 
-        if (dead_prompt_obj.object_index == obj_npc_dead_1) {
-            dead_dialog_text = "O corpo está frio e úmido. O cheiro salgado não combina com a terra seca ao redor.";
-        } else {
-            dead_dialog_text = "A pele tem marcas antigas, como arranhões. Você desvia o olhar antes de entender o resto.";
+        if (instance_exists(dead_prompt_obj) && keyboard_check_pressed(vk_enter)) {
+            dead_dialog_active = true;
+            target.pl_dialog_lock = true;
+
+            if (dead_prompt_obj.object_index == obj_npc_dead_1) {
+                dead_dialog_text = "O corpo esta frio e umido. O cheiro salgado nao combina com a terra seca ao redor.";
+            } else {
+                dead_dialog_text = "A pele tem marcas antigas, como arranhoes. Voce desvia o olhar antes de entender o resto.";
+            }
         }
     }
 }

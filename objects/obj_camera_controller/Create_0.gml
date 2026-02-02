@@ -9,6 +9,21 @@ ui_font = asset_get_index("Mgs");
 if (ui_font == -1) ui_font = asset_get_index("fnt_Mgs");
 if (ui_font == -1) ui_font = -1;
 
+if (!variable_global_exists("intro_pending")) global.intro_pending = false;
+
+intro_pages = [
+  "Introducao\n\nAnahi desperta com um silencio estranho.\nNao ha vozes, nao ha passos, nao ha vida.",
+  "Ao sair de sua casa, a vila que antes conhecia esta irreconhecivel.\n\nCorpos espalham-se pelas ruas, imoveis, com olhares vazios e marcas de algo que nao deveria existir. O ar e pesado. O ceu, escuro demais para ser dia.",
+  "Algo aconteceu durante a noite.\nAlgo tomou a vila... e nao deixou sobreviventes.",
+  "Enquanto Anahi caminha entre os mortos, uma sensacao incomoda cresce em seu peito:\nisso nao foi apenas uma doenca.\n\nFoi o comeco de algo muito pior."
+];
+
+intro_active = false;
+intro_page = 0;
+intro_fade_alpha = 0;
+intro_fade_out = false;
+intro_fade_steps = max(1, ceil(room_speed * 0.5));
+
 menu_hover = -1;
 menu_show_credits = false;
 menu_selected = 0;
@@ -50,6 +65,14 @@ if (room == Menu) {
     view_enabled = false;
     view_visible[0] = false;
     exit;
+}
+
+if (global.intro_pending) {
+    global.intro_pending = false;
+    intro_active = true;
+    intro_page = 0;
+    intro_fade_alpha = 1;
+    intro_fade_out = false;
 }
 
 follow_lerp_x = 0.16;

@@ -38,8 +38,8 @@
   "resourceVersion":"2.0",
   "solid":false,
   "spriteId":{
-    "name":"sprPlayerIdleDown",
-    "path":"sprites/sprPlayerIdleDown/sprPlayerIdleDown.yy",
+    "name":"sprPlayerMaskIdleDown",
+    "path":"sprites/sprPlayerMaskIdleDown/sprPlayerMaskIdleDown.yy",
   },
   "spriteMaskId":null,
   "visible":true,

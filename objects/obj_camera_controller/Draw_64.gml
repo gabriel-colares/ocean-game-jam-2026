@@ -58,6 +58,38 @@ var gui_h = display_get_gui_height();
 
 draw_set_font(ui_font);
 
+if (intro_active || intro_fade_out) {
+    draw_set_alpha(intro_fade_alpha);
+    draw_set_color(c_black);
+    draw_rectangle(0, 0, gui_w, gui_h, false);
+    draw_set_alpha(1);
+
+    if (intro_active) {
+        var m_intro = 20;
+        var box_h_intro = 200;
+        var ix1 = m_intro;
+        var iy1 = gui_h - m_intro - box_h_intro;
+        var ix2 = gui_w - m_intro;
+        var iy2 = gui_h - m_intro;
+
+        draw_set_color(c_black);
+        draw_rectangle(ix1, iy1, ix2, iy2, false);
+        draw_set_color(c_white);
+        draw_rectangle(ix1, iy1, ix2, iy2, true);
+
+        draw_set_halign(fa_left);
+        draw_set_valign(fa_top);
+        var pad_l_intro = 16;
+        var pad_r_intro = 16;
+        var pad_t_intro = 14;
+        var wrap_w_intro = max(1, (ix2 - ix1) - (pad_l_intro + pad_r_intro));
+        draw_text_ext(ix1 + pad_l_intro, iy1 + pad_t_intro, intro_pages[intro_page], 18, wrap_w_intro);
+    }
+
+    draw_set_font(-1);
+    exit;
+}
+
 if (dead_dialog_active) {
     var m = 20;
     var box_h = 132;
