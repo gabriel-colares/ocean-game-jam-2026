@@ -239,4 +239,25 @@ if (upgrade_fx_t > 0) {
     draw_set_alpha(1);
 }
 
+if (room == Aldeia_4) {
+    var lvl = 0;
+    if (variable_global_exists("difficulty_level")) lvl = global.difficulty_level;
+    var raid = 0;
+    if (variable_instance_exists(self, "rogue4_wave")) raid = rogue4_wave;
+    var alive = 0;
+    if (variable_instance_exists(self, "rogue4_alive")) alive = rogue4_alive;
+    var killed = 0;
+    if (variable_instance_exists(self, "rogue4_killed")) killed = rogue4_killed;
+
+    draw_set_halign(fa_left);
+    draw_set_valign(fa_top);
+    draw_set_alpha(1);
+    draw_set_color(c_white);
+
+    var tx = 12;
+    var ty = 72;
+    draw_text(tx, ty, "Raid: " + string(raid) + "  Nivel: " + string(lvl));
+    draw_text(tx, ty + 18, "Vivos: " + string(alive) + "  Derrotados: " + string(killed));
+}
+
 draw_set_font(-1);

@@ -319,6 +319,12 @@ if (room == Aldeia_4 && diff_can_tick) {
             if (!is_dead) alive++;
         }
 
+        if (!variable_instance_exists(self, "rogue4_alive_prev")) rogue4_alive_prev = alive;
+        if (!variable_instance_exists(self, "rogue4_killed")) rogue4_killed = 0;
+        if (alive < rogue4_alive_prev) rogue4_killed += (rogue4_alive_prev - alive);
+        rogue4_alive_prev = alive;
+        rogue4_alive = alive;
+
         if (rogue4_state == 0) {
             if (rogue4_wait <= 0) rogue4_state = 1;
         }
@@ -367,6 +373,8 @@ if (room == Aldeia_4 && diff_can_tick) {
             }
 
             alive = count;
+            rogue4_alive_prev = alive;
+            rogue4_alive = alive;
             rogue4_state = 2;
         }
 

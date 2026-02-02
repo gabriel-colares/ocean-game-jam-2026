@@ -3,8 +3,8 @@ draw_self();
 if (variable_instance_exists(self, "hpbar_show_t") && hpbar_show_t > 0 && variable_instance_exists(self, "hp") && variable_instance_exists(self, "hp_max") && hp_max > 0) {
   var bar_w = 26;
   var bar_h = 4;
-  var bar_x1 = x - bar_w * 0.5;
-  var bar_y1 = y + bbox_top - 10;
+  var bar_x1 = ((bbox_left + bbox_right) * 0.5) - (bar_w * 0.5);
+  var bar_y1 = bbox_top - 6;
   var pct = clamp(hp / hp_max, 0, 1);
 
   draw_set_alpha(0.75);
