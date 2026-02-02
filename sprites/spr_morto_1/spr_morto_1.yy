@@ -1,27 +1,27 @@
 {
   "$GMSprite":"v2",
-  "%Name":"morto_2",
+  "%Name":"spr_morto_1",
   "bboxMode":0,
-  "bbox_bottom":17,
+  "bbox_bottom":15,
   "bbox_left":0,
   "bbox_right":17,
-  "bbox_top":1,
+  "bbox_top":4,
   "collisionKind":1,
   "collisionTolerance":0,
   "DynamicTexturePage":false,
   "edgeFiltering":false,
   "For3D":false,
   "frames":[
-    {"$GMSpriteFrame":"v1","%Name":"d0aaaa7c-16e2-45db-88eb-269f0d571877","name":"d0aaaa7c-16e2-45db-88eb-269f0d571877","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"d96d1ebf-abd7-4018-9c1c-af26bb35771d","name":"d96d1ebf-abd7-4018-9c1c-af26bb35771d","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
   ],
   "gridX":0,
   "gridY":0,
   "height":18,
   "HTile":false,
   "layers":[
-    {"$GMImageLayer":"","%Name":"b81d098f-6d41-4e52-9fde-7e2439887383","blendMode":0,"displayName":"default","isLocked":false,"name":"b81d098f-6d41-4e52-9fde-7e2439887383","opacity":100.0,"resourceType":"GMImageLayer","resourceVersion":"2.0","visible":true,},
+    {"$GMImageLayer":"","%Name":"d302299b-14f8-4a8c-ba99-b295e5ef6481","blendMode":0,"displayName":"default","isLocked":false,"name":"d302299b-14f8-4a8c-ba99-b295e5ef6481","opacity":100.0,"resourceType":"GMImageLayer","resourceVersion":"2.0","visible":true,},
   ],
-  "name":"morto_2",
+  "name":"spr_morto_1",
   "nineSlice":null,
   "origin":0,
   "parent":{
@@ -33,7 +33,7 @@
   "resourceVersion":"2.0",
   "sequence":{
     "$GMSequence":"v1",
-    "%Name":"morto_2",
+    "%Name":"spr_morto_1",
     "autoRecord":true,
     "backdropHeight":768,
     "backdropImageOpacity":0.5,
@@ -57,7 +57,7 @@
       "resourceType":"KeyframeStore<MomentsEventKeyframe>",
       "resourceVersion":"2.0",
     },
-    "name":"morto_2",
+    "name":"spr_morto_1",
     "playback":1,
     "playbackSpeed":30.0,
     "playbackSpeedType":0,
@@ -69,8 +69,8 @@
     "tracks":[
       {"$GMSpriteFramesTrack":"","builtinName":0,"events":[],"inheritsTrackColour":true,"interpolation":1,"isCreationTrack":false,"keyframes":{"$KeyframeStore<SpriteFrameKeyframe>":"","Keyframes":[
             {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{
-                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"d0aaaa7c-16e2-45db-88eb-269f0d571877","path":"sprites/morto_2/morto_2.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
-              },"Disabled":false,"id":"debef00c-b01c-4434-a8d9-70e78fc56d89","IsCreationKey":false,"Key":0.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
+                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"d96d1ebf-abd7-4018-9c1c-af26bb35771d","path":"sprites/spr_morto_1/spr_morto_1.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
+              },"Disabled":false,"id":"f661be21-9c9a-4492-980e-3657c96e29cf","IsCreationKey":false,"Key":0.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
           ],"resourceType":"KeyframeStore<SpriteFrameKeyframe>","resourceVersion":"2.0",},"modifiers":[],"name":"frames","resourceType":"GMSpriteFramesTrack","resourceVersion":"2.0","spriteId":null,"trackColour":0,"tracks":[],"traits":0,},
     ],
     "visibleRange":null,

@@ -1,13 +1,15 @@
 /// scr_player_init_animation.gml
 function pl_init_animation() {
   #region ANIMAÇÃO
-  sprIdleDown = sprPlayerMaskIdleDown;
-  sprIdleUp   = sprPlayerMaskIdleUp;
-  sprIdleSide = sprPlayerMaskIdleLeft;
+  pl_has_mask = false;
 
-  sprRunDown  = sprPlayerMaskRunDown;
-  sprRunUp    = sprPlayerMaskRunUp;
-  sprRunSide  = sprPlayerMaskRunLeft;
+  sprIdleDown = sprPlayerIdleDown;
+  sprIdleUp   = sprPlayerIdleUp;
+  sprIdleSide = sprPlayerIdleLeft;
+
+  sprRunDown  = sprPlayerRunDown;
+  sprRunUp    = sprPlayerRunUp;
+  sprRunSide  = sprPlayerRunLeft;
 
   sprAtkDown  = sprPlayerMaskAttackDown;
   sprAtkUp    = sprPlayerMaskAttackUp;
@@ -26,8 +28,7 @@ function pl_init_animation() {
   image_speed  = 0;
   image_xscale = 1;
 
-  // RECOMENDADO: troque por um sprPlayerMask depois
-  mask_index = sprPlayerMaskRunDown;
+  mask_index = sprPlayerRunDown;
 
   attack_hold_steps = 10;
   shoot_hold_steps  = 8;

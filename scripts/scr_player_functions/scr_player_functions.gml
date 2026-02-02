@@ -157,6 +157,7 @@ function pl_init_functions() {
 
   #region MÉTODOS DO PLAYER
   self.pl_attack_start = function() {
+    if (!pl_has_mask) return;
     is_attacking = true;
     attack_timer = 0;
 
@@ -187,6 +188,7 @@ function pl_init_functions() {
   };
 
   self.pl_shoot_start = function() {
+    if (!pl_has_mask) return;
     is_shooting = true;
     shoot_timer = 0;
 

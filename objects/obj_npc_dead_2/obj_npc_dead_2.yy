@@ -30,8 +30,8 @@
   "resourceVersion":"2.0",
   "solid":false,
   "spriteId":{
-    "name":"morto_2",
-    "path":"sprites/morto_2/morto_2.yy",
+    "name":"spr_morto_2",
+    "path":"sprites/spr_morto_2/spr_morto_2.yy",
   },
   "spriteMaskId":null,
   "visible":true,

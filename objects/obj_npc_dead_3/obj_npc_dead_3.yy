@@ -1,9 +1,9 @@
 {
   "$GMObject":"",
-  "%Name":"obj_npc_dead_1",
+  "%Name":"obj_npc_dead_3",
   "eventList":[],
   "managed":true,
-  "name":"obj_npc_dead_1",
+  "name":"obj_npc_dead_3",
   "overriddenProperties":[],
   "parent":{
     "name":"Objects",
@@ -30,8 +30,8 @@
   "resourceVersion":"2.0",
   "solid":false,
   "spriteId":{
-    "name":"spr_morto_1",
-    "path":"sprites/spr_morto_1/spr_morto_1.yy",
+    "name":"spr_morto_3",
+    "path":"sprites/spr_morto_3/spr_morto_3.yy",
   },
   "spriteMaskId":null,
   "visible":true,

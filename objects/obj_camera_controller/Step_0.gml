@@ -167,14 +167,28 @@ if (intro_active) {
             }
         }
 
+        var n3 = instance_number(obj_npc_dead_3);
+        for (var i3 = 0; i3 < n3; i3++) {
+            var d3 = instance_find(obj_npc_dead_3, i3);
+            var dx3 = d3.x - px;
+            var dy3 = d3.y - py;
+            var dd3 = dx3 * dx3 + dy3 * dy3;
+            if (dd3 <= best_d2) {
+                best_d2 = dd3;
+                dead_prompt_obj = d3;
+            }
+        }
+
         if (instance_exists(dead_prompt_obj) && keyboard_check_pressed(vk_enter)) {
             dead_dialog_active = true;
             target.pl_dialog_lock = true;
 
             if (dead_prompt_obj.object_index == obj_npc_dead_1) {
                 dead_dialog_text = "O corpo esta frio e umido. O cheiro salgado nao combina com a terra seca ao redor.";
-            } else {
+            } else if (dead_prompt_obj.object_index == obj_npc_dead_2) {
                 dead_dialog_text = "A pele tem marcas antigas, como arranhoes. Voce desvia o olhar antes de entender o resto.";
+            } else {
+                dead_dialog_text = "Ha areia presa sob as unhas. O braco esta rigido, como se ainda tentasse se arrastar para longe.";
             }
         }
     }
