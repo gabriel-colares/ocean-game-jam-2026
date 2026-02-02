@@ -7,6 +7,14 @@ function pl_step() {
     pl_step_collision();
     exit;
   }
+  if (variable_instance_exists(self, "pl_dialog_lock") && pl_dialog_lock) {
+    is_attacking = false;
+    is_shooting = false;
+    hsp = 0;
+    vsp = 0;
+    pl_step_collision();
+    exit;
+  }
   pl_step_reacquire_gamepad();
   pl_step_input();
   pl_step_direction_lock();

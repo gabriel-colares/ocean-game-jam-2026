@@ -1,0 +1,103 @@
+if (room == Menu) {
+    var x0 = menu_gui_x;
+    var y0 = menu_start_y;
+    var s = menu_spacing;
+    var w = menu_button_w;
+    var h = menu_button_h;
+
+    draw_set_halign(fa_center);
+    draw_set_valign(fa_middle);
+    draw_set_font(ui_font);
+
+    if (menu_show_credits) {
+        var gw = display_get_gui_width();
+        var gh = display_get_gui_height();
+        draw_set_alpha(1);
+        draw_set_color(c_black);
+        draw_rectangle(0, 0, gw, gh, false);
+        draw_set_color(c_white);
+        draw_sprite_stretched(spr_creditos, 0, 0, 0, gw, gh);
+        draw_set_font(-1);
+        exit;
+    }
+
+    for (var i = 0; i < 3; i++) {
+        var yy = y0 + i * s;
+
+        draw_set_alpha(1);
+        draw_set_color(c_white);
+        draw_rectangle(x0, yy, x0 + w, yy + h, false);
+        draw_set_color(c_black);
+        draw_rectangle(x0, yy, x0 + w, yy + h, true);
+
+        if (i == menu_selected) {
+            draw_set_color(c_aqua);
+            draw_rectangle(x0 - 2, yy - 2, x0 + w + 2, yy + h + 2, true);
+            draw_rectangle(x0 - 1, yy - 1, x0 + w + 1, yy + h + 1, true);
+        }
+    }
+
+    draw_set_color(c_black);
+    draw_text(x0 + w * 0.5, y0 + h * 0.5, "START");
+    draw_text(x0 + w * 0.5, y0 + s + h * 0.5, "CREDITS");
+    draw_text(x0 + w * 0.5, y0 + s * 2 + h * 0.5, "EXIT");
+
+    if (menu_fade_alpha > 0) {
+        draw_set_alpha(menu_fade_alpha);
+        draw_set_color(c_black);
+        draw_rectangle(0, 0, display_get_gui_width(), display_get_gui_height(), false);
+        draw_set_alpha(1);
+    }
+
+    draw_set_font(-1);
+    exit;
+}
+
+var gui_w = display_get_gui_width();
+var gui_h = display_get_gui_height();
+
+draw_set_font(ui_font);
+
+if (dead_dialog_active) {
+    var m = 20;
+    var box_h = 132;
+    var x1 = m;
+    var y1 = gui_h - m - box_h;
+    var x2 = gui_w - m;
+    var y2 = gui_h - m;
+
+    draw_set_alpha(1);
+    draw_set_color(c_black);
+    draw_rectangle(x1, y1, x2, y2, false);
+    draw_set_color(c_white);
+    draw_rectangle(x1, y1, x2, y2, true);
+
+    draw_set_halign(fa_left);
+    draw_set_valign(fa_top);
+    draw_text_ext(x1 + 16, y1 + 14, dead_dialog_text, -1, 26);
+
+    draw_set_font(-1);
+    exit;
+}
+
+if (instance_exists(dead_prompt_obj)) {
+    var vx = camera_get_view_x(cam);
+    var vy = camera_get_view_y(cam);
+
+    var wx = dead_prompt_obj.x;
+    var wy = dead_prompt_obj.bbox_top - 6;
+
+    var sx = ((wx - vx) / view_w) * gui_w;
+    var sy = ((wy - vy) / view_h) * gui_h;
+
+    draw_set_halign(fa_center);
+    draw_set_valign(fa_bottom);
+
+    draw_set_alpha(1);
+    draw_set_color(c_black);
+    draw_text(sx + 1, sy + 1, dead_prompt_text);
+    draw_set_color(c_white);
+    draw_text(sx, sy, dead_prompt_text);
+}
+
+draw_set_font(-1);

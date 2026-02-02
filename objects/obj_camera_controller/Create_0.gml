@@ -3,6 +3,55 @@ view_h = 12 * 16;
 
 global.en_debug = false;
 
+depth = -1000;
+
+ui_font = asset_get_index("Mgs");
+if (ui_font == -1) ui_font = asset_get_index("fnt_Mgs");
+if (ui_font == -1) ui_font = -1;
+
+menu_hover = -1;
+menu_show_credits = false;
+menu_selected = 0;
+menu_gui_x = 1000;
+menu_start_y = 200;
+menu_spacing = 60;
+menu_button_w = 260;
+menu_button_h = 44;
+menu_gp = -1;
+menu_start_phase = 0;
+menu_start_timer = 0;
+menu_wait_steps = max(1, ceil(room_speed * 1.0));
+menu_fade_timer = 0;
+menu_fade_steps = max(1, ceil(room_speed * 0.2));
+menu_fade_alpha = 0;
+
+dead_interact_r = 28;
+dead_prompt_obj = noone;
+dead_prompt_text = "Interagir Enter";
+
+dead_dialog_active = false;
+dead_dialog_text = "";
+
+if (room == Menu) {
+    var layer_anahi = layer_get_id("Anahi");
+    if (layer_anahi != -1) layer_set_visible(layer_anahi, true);
+    var layer_mask = layer_get_id("Anahi_Mask");
+    if (layer_mask != -1) layer_set_visible(layer_mask, false);
+
+    audio_stop_sound(menu);
+    audio_play_sound(menu, 0, true);
+
+    menu_start_phase = 0;
+    menu_start_timer = 0;
+    menu_fade_timer = 0;
+    menu_fade_alpha = 0;
+
+    menu_gp = pl_gamepad_find_first(3);
+    view_enabled = false;
+    view_visible[0] = false;
+    exit;
+}
+
 follow_lerp_x = 0.16;
 follow_lerp_y = 0.10;
 
