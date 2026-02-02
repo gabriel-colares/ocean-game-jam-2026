@@ -128,6 +128,100 @@ if (!dialog_accept && intro_gp != -1) {
         gamepad_button_check_pressed(intro_gp, gp_face3);
 }
 
+var player_dead = false;
+if (instance_exists(target)) {
+    if (variable_instance_exists(target, "pl_dead") && target.pl_dead) player_dead = true;
+    if (variable_instance_exists(target, "hp") && target.hp <= 0) player_dead = true;
+}
+
+if (player_dead && !death_panel_active) {
+    death_panel_active = true;
+    death_panel_selected = 0;
+    death_panel_nav_cd = 0;
+    if (variable_global_exists("respawn_restarting")) global.respawn_restarting = true;
+}
+
+if (death_panel_active) {
+    dead_prompt_obj = noone;
+    if (instance_exists(target)) target.pl_dialog_lock = true;
+
+    if (death_panel_nav_cd > 0) death_panel_nav_cd--;
+
+    var nav_up_d = keyboard_check_pressed(vk_up) || keyboard_check_pressed(ord("W"));
+    var nav_down_d = keyboard_check_pressed(vk_down) || keyboard_check_pressed(ord("S"));
+    if (intro_gp != -1) {
+        nav_up_d = nav_up_d || gamepad_button_check_pressed(intro_gp, gp_padu);
+        nav_down_d = nav_down_d || gamepad_button_check_pressed(intro_gp, gp_padd);
+
+        if (death_panel_nav_cd <= 0) {
+            var ly_d = gamepad_axis_value(intro_gp, gp_axislv);
+            if (ly_d <= -0.55) { nav_up_d = true; death_panel_nav_cd = max(1, ceil(room_speed * 0.18)); }
+            if (ly_d >= 0.55) { nav_down_d = true; death_panel_nav_cd = max(1, ceil(room_speed * 0.18)); }
+        }
+    }
+
+    if (nav_up_d) death_panel_selected = (death_panel_selected + 1) mod 2;
+    if (nav_down_d) death_panel_selected = (death_panel_selected + 1) mod 2;
+
+    var accept_d = keyboard_check_pressed(vk_enter) || keyboard_check_pressed(vk_space);
+    if (!accept_d && intro_gp != -1) {
+        accept_d = gamepad_button_check_pressed(intro_gp, gp_start) || gamepad_button_check_pressed(intro_gp, gp_face1);
+    }
+
+    var cancel_d = keyboard_check_pressed(vk_escape);
+    if (!cancel_d && intro_gp != -1) cancel_d = gamepad_button_check_pressed(intro_gp, gp_face2);
+
+    if (cancel_d) {
+        game_end();
+        exit;
+    }
+
+    if (accept_d) {
+        switch (death_panel_selected) {
+            case 0:
+                if (!variable_global_exists("player_respawn_hp")) global.player_respawn_hp = 1;
+                global.player_hp = global.player_respawn_hp;
+                if (!variable_global_exists("respawn_target_active")) global.respawn_target_active = false;
+                if (!variable_global_exists("respawn_target_room")) global.respawn_target_room = room;
+                if (!variable_global_exists("respawn_target_x")) global.respawn_target_x = 0;
+                if (!variable_global_exists("respawn_target_y")) global.respawn_target_y = 0;
+
+                var rx = (instance_exists(target)) ? target.x : 0;
+                var ry = (instance_exists(target)) ? target.y : 0;
+                var best_d2 = 130;
+                var best_x = 0;
+                var best_y = 0;
+                var n_r = instance_number(obj_respawn);
+                for (var i_r = 0; i_r < n_r; i_r++) {
+                    var r = instance_find(obj_respawn, i_r);
+                    if (!instance_exists(r)) continue;
+                    var dxr = r.x - rx;
+                    var dyr = r.y - ry;
+                    var d2r = dxr * dxr + dyr * dyr;
+                    if (d2r < best_d2) {
+                        best_d2 = d2r;
+                        best_x = round(r.x);
+                        best_y = round(r.y);
+                    }
+                }
+                if (n_r <= 0) { best_x = round(rx); best_y = round(ry); }
+
+                global.respawn_target_room = room;
+                global.respawn_target_x = best_x;
+                global.respawn_target_y = best_y;
+                global.respawn_target_active = true;
+
+                global.respawn_apply = true;
+                room_restart();
+                exit;
+            case 1:
+                game_end();
+                exit;
+        }
+    }
+    exit;
+}
+
 if (intro_active) {
     target.pl_dialog_lock = true;
     dead_prompt_obj = noone;

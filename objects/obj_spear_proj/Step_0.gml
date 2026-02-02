@@ -14,6 +14,25 @@ if (!inited) {
 }
 #endregion
 
+#region HIT ENEMY
+var e = collision_circle(x, y, 6, obj_enemy_base, false, true);
+if (instance_exists(e)) {
+  var did = false;
+  if (variable_instance_exists(e, "en_take_damage")) did = e.en_take_damage(dmg);
+
+  if (did && variable_instance_exists(e, "cfg") && is_struct(e.cfg)) {
+    if (variable_struct_exists(e.cfg, "kind") && e.cfg.kind == "nita") {
+      if (!variable_instance_exists(e, "slow_mult")) e.slow_mult = 0.55;
+      if (!variable_instance_exists(e, "slow_t")) e.slow_t = 0;
+      e.slow_t = max(e.slow_t, ceil(room_speed * 0.75));
+    }
+  }
+
+  instance_destroy();
+  exit;
+}
+#endregion
+
 #region LIFE
 life--;
 if (life <= 0) { instance_destroy(); exit; }

@@ -48,6 +48,12 @@ dead_prompt_text = "Aperte X para interagir";
 dead_dialog_active = false;
 dead_dialog_text = "";
 
+death_panel_active = false;
+death_panel_selected = 0;
+death_panel_nav_cd = 0;
+
+if (!variable_global_exists("respawn_target_active")) global.respawn_target_active = false;
+
 if (!variable_global_exists("saci_stage")) global.saci_stage = 0;
 
 saci_dialog_active = false;

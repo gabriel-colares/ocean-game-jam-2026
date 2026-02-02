@@ -2,6 +2,7 @@
 spd = 5.5;
 dir = 0; // vai ser sobrescrito pelo player
 life = 90;
+dmg = 2;
 
 solid_obj = asset_get_index("obj_solid");
 #endregion

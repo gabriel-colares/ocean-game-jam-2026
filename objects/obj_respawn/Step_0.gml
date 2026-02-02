@@ -4,11 +4,20 @@ global.respawn_y = y;
 
 var p = instance_find(obj_player, 0);
 if (global.respawn_apply && instance_exists(p)) {
+  if (variable_global_exists("respawn_target_active") && global.respawn_target_active) {
+    if (variable_global_exists("respawn_target_room") && global.respawn_target_room != room) {
+      exit;
+    }
+    if (round(x) != global.respawn_target_x || round(y) != global.respawn_target_y) {
+      exit;
+    }
+  }
   p.x = x;
   p.y = y;
   if (variable_global_exists("player_hp") && variable_instance_exists(p, "hp")) p.hp = global.player_hp;
   if (variable_instance_exists(p, "pl_dead")) p.pl_dead = false;
   global.respawn_apply = false;
+  if (variable_global_exists("respawn_target_active")) global.respawn_target_active = false;
 }
 
 if (!instance_exists(p)) exit;

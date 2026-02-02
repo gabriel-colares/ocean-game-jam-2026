@@ -205,6 +205,40 @@ function pl_init_functions() {
 
     hsp = 0; vsp = 0;
     x_resto = 0; y_resto = 0;
+
+    var cx = (bbox_left + bbox_right) * 0.5;
+    var cy = (bbox_top + bbox_bottom) * 0.5;
+
+    var off = 12;
+    var hx = cx + attack_lock_x * off;
+    var hy = cy + attack_lock_y * off;
+
+    var hw = 9;
+    var hh = 9;
+    var x1 = hx - hw;
+    var y1 = hy - hh;
+    var x2 = hx + hw;
+    var y2 = hy + hh;
+
+    var lst = ds_list_create();
+    var n = collision_rectangle_list(x1, y1, x2, y2, obj_enemy_base, false, true, lst, false);
+    for (var i = 0; i < n; i++) {
+      var e = lst[| i];
+      if (!instance_exists(e)) continue;
+      if (variable_instance_exists(e, "dead") && e.dead) continue;
+      if (!variable_instance_exists(e, "en_take_damage")) continue;
+
+      var did = e.en_take_damage(1);
+      if (did) {
+        var kb = 5.0;
+        e.hsp = attack_lock_x * kb;
+        e.vsp = attack_lock_y * kb;
+        if (variable_instance_exists(e, "x_rem")) e.x_rem = 0;
+        if (variable_instance_exists(e, "y_rem")) e.y_rem = 0;
+        if (variable_instance_exists(e, "hitstun_t")) e.hitstun_t = max(e.hitstun_t, 12);
+      }
+    }
+    ds_list_destroy(lst);
   };
 
   self.pl_shoot_start = function() {

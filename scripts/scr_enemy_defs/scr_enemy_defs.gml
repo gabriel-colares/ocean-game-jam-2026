@@ -39,7 +39,7 @@ function en_cfg_get(_kind) {
 
     defs.skeleton = {
       kind: "skeleton",
-      hp_max: 3,
+      hp_max: 6,
       attack_dmg: 1,
       move_speed: 1.2,
       accel_move: 0.25,
@@ -83,7 +83,7 @@ function en_cfg_get(_kind) {
 
     defs.monkey = {
       kind: "monkey",
-      hp_max: 2,
+      hp_max: 10,
       attack_dmg: 1,
       move_speed: 1.6,
       accel_move: 0.30,
@@ -171,7 +171,7 @@ function en_cfg_get(_kind) {
 
     defs.slime = {
       kind: "slime",
-      hp_max: 2,
+      hp_max: 6,
       attack_dmg: 1,
       move_speed: 0.95,
       accel_move: 0.18,

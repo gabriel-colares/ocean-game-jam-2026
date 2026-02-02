@@ -46,6 +46,8 @@ function en_init() {
   hp = hp_max;
   hitstun_t = 0;
   dead = false;
+  slow_t = 0;
+  slow_mult = 0.55;
 
   solid_obj = asset_get_index("obj_solid");
 

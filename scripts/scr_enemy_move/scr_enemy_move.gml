@@ -165,6 +165,7 @@ function en_move_separation() {
 function en_move() {
   if (dead) { hsp = 0; vsp = 0; return; }
   if (variable_instance_exists(self, "nav_want_move")) nav_want_move = false;
+  if (variable_instance_exists(self, "slow_t") && slow_t > 0) slow_t--;
 
   if (state == EN_STATE.ATTACK_WINDUP || state == EN_STATE.ATTACK_ACTIVE || state == EN_STATE.ATTACK_RECOVERY) {
     hsp = en_approach(hsp, 0, cfg.decel_stop);
@@ -198,6 +199,7 @@ function en_move() {
     var nx = dx / dist;
     var ny = dy / dist;
     var spd = cfg.move_speed;
+    if (variable_instance_exists(self, "slow_t") && slow_t > 0 && variable_instance_exists(self, "slow_mult")) spd *= slow_mult;
     var arrive_r = 8;
     if (dist < arrive_r) spd *= (dist / arrive_r);
     des_h = nx * spd;

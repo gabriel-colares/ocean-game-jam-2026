@@ -58,6 +58,51 @@ var gui_h = display_get_gui_height();
 
 draw_set_font(ui_font);
 
+if (death_panel_active) {
+    draw_set_alpha(1);
+    draw_set_color(c_black);
+    draw_rectangle(0, 0, gui_w, gui_h, false);
+
+    var w = 360;
+    var h = 200;
+    var x1 = floor((gui_w - w) * 0.5);
+    var y1 = floor((gui_h - h) * 0.5);
+    var x2 = x1 + w;
+    var y2 = y1 + h;
+
+    draw_set_color(c_white);
+    draw_rectangle(x1, y1, x2, y2, true);
+
+    draw_set_halign(fa_center);
+    draw_set_valign(fa_top);
+    draw_set_color(c_white);
+    draw_text(x1 + w * 0.5, y1 + 18, "VOCE MORREU");
+
+    var opt_y0 = y1 + 90;
+    var opt_gap = 44;
+    for (var i = 0; i < 2; i++) {
+        var yy = opt_y0 + i * opt_gap;
+        if (i == death_panel_selected) {
+            draw_set_color(c_aqua);
+            draw_rectangle(x1 + 24, yy - 6, x2 - 24, yy + 28, true);
+            draw_set_color(c_black);
+        } else {
+            draw_set_color(c_white);
+        }
+
+        var label = (i == 0) ? "RESTART" : "SAIR";
+        draw_text(x1 + w * 0.5, yy, label);
+    }
+
+    draw_set_halign(fa_center);
+    draw_set_valign(fa_bottom);
+    draw_set_color(c_gray);
+    draw_text(x1 + w * 0.5, y2 - 14, "X/ENTER: OK   O/ESC: SAIR");
+
+    draw_set_font(-1);
+    exit;
+}
+
 if (intro_active || intro_fade_out) {
     draw_set_alpha(intro_fade_alpha);
     draw_set_color(c_black);
